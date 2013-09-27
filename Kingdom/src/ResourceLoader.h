@@ -10,19 +10,25 @@
 
 #include <string>
 #include <map>
+
 #include "SDL.h"
 #include "SDL_image.h"
 
 class ResourceLoader {
 public:
-	ResourceLoader(SDL_Renderer* renderer);
+	static ResourceLoader* getInstance(SDL_Renderer* renderer);
+
 	virtual ~ResourceLoader();
 	SDL_Texture* loadTexture(std::string filename);
 protected:
 
 private:
+	static SDL_Renderer* renderer;
+	static ResourceLoader* instance;
+
+	ResourceLoader();
 	std::map <std::string, SDL_Texture*> textureMap;
-	SDL_Renderer* renderer;
+
 
 };
 
