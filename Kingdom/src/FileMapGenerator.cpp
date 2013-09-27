@@ -6,6 +6,7 @@
  */
 
 #include "FileMapGenerator.h"
+#include <sstream>
 using namespace std;
 FileMapGenerator::FileMapGenerator(std::ifstream* stream) {
 	this->stream = stream;
@@ -40,7 +41,7 @@ std::vector<short> FileMapGenerator::getData() {
 	return data;
 }
 
-int stringToInt(const string& str) {
+int FileMapGenerator::stringToInt(const string& str) {
 	stringstream convert(str);
 	int n;
 	convert >> n;

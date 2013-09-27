@@ -22,7 +22,7 @@ private:
 	std::ifstream* stream;
 	int mapWidth;
 	int mapHeight;
-	int stringToInt;
+	int stringToInt(const std::string& str);
 };
 
 #endif /* FILEMAPGENERATOR_H_ */

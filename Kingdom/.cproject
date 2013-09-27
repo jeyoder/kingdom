@@ -59,8 +59,8 @@
 									<listOptionValue builtIn="false" value="uuid"/>
 								</option>
 								<option id="gnu.cpp.link.option.paths.1290663384" name="Library search path (-L)" superClass="gnu.cpp.link.option.paths" valueType="libPaths">
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/SDL/SDL2-2.0.0/i686-w64-mingw32/bin}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/SDL/SDL2_image-2.0.0/i686-w64-mingw32/bin}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/SDL/SDL2-2.0.0/i686-w64-mingw32/lib}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/SDL/SDL2_image-2.0.0/i686-w64-mingw32/lib}&quot;"/>
 								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.cpp.linker.input.1642672619" superClass="cdt.managedbuild.tool.gnu.cpp.linker.input">
 									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
