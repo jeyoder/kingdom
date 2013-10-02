@@ -7,9 +7,9 @@
 
 #include "FileMapGenerator.h"
 using namespace std;
-FileMapGenerator::FileMapGenerator(std::ifstream* stream) {
+/*FileMapGenerator::FileMapGenerator(std::ifstream* stream) {
 	this->stream = stream;
-}
+}*/
 
 FileMapGenerator::~FileMapGenerator() {
 	// TODO Auto-generated destructor stub
@@ -25,9 +25,9 @@ std::vector<short> FileMapGenerator::getData() {
 				string body = line.substr(pos);
 				//found an = declaration
 				if(head == "width") {
-					this->mapWidth = stringToInt(body);
+					//this->mapWidth = stringToInt(body); //UNCOMMIT
 				} else if (head == "height") {
-					this->mapHeight = stringToInt(body);
+					//this->mapHeight = stringToInt(body); //UNCOMMIT
 				} else if (head == "data") {
 					while(!stream->eof()) {
 						getline(*stream, line);
@@ -41,16 +41,17 @@ std::vector<short> FileMapGenerator::getData() {
 }
 
 int stringToInt(const string& str) {
-	stringstream convert(str);
-	int n;
+	/*stringstream convert(str); //UNCOMMIT
+	int n; //UNCOMMIT
 	convert >> n;
-	return n;
+	return n;*/
+	return 0;
 }
 
 int FileMapGenerator::getWidth() {
-
+	return 0;
 }
 int FileMapGenerator::getHeight() {
-
+	return 0;
 }
 

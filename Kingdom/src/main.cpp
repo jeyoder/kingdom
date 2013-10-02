@@ -20,13 +20,16 @@ int main(int argc, char* argv[]) {
 
 	//Start SDL
 	SDL_Init(SDL_INIT_EVERYTHING | SDL_INIT_NOPARACHUTE);
-	window = SDL_CreateWindow("Resource Loader", 100, 100, 1024, 768, SDL_WINDOW_OPENGL);
+	window = SDL_CreateWindow("Resource Loader", 100, 100, 1056, 800, SDL_WINDOW_OPENGL);
+	//SDL_Renderer* rendererer = SDL_CreateRenderer(window,-1,SDL_RENDERER_ACCELERATED);
 	SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 	cout << "SDL initialized" << endl;
 
 	ResourceLoader* loader = ResourceLoader::getInstance(renderer);
 	loader->loadTexture("assets/thor.png");
 	SDL_Texture *texture = loader->loadTexture("assets/thor.png");
+	loader->loadTexture("assets/KingGreen.png");
+	loader->loadTexture("assets/KingRed.png");
 	ifstream stream;
 	stream.open("assets/tilemap.txt");
 	if(stream.is_open()) {
@@ -41,20 +44,20 @@ int main(int argc, char* argv[]) {
 	//Initialize App State
 	InGameState currentAppState = InGameState();
 	//Game Loop
-	int f = 0;
-	while(f < 30*5){
+	int frame = 0;
+	while(frame < 30*5){
 		SDL_RenderClear(renderer);
 		SDL_RenderCopy(renderer, texture, NULL, NULL);
 		SDL_RenderPresent(renderer);
 		SDL_Delay(1000 / 30);
-		f++;
+		frame++;
 	}
 
-	SDL_RenderClear(renderer);
+	/*SDL_RenderClear(renderer);
 	SDL_RenderCopy(renderer, texture, NULL, NULL);
 	SDL_RenderPresent(renderer);
 	SDL_Delay(5000);
-	SDL_DestroyRenderer(renderer);
+	SDL_DestroyRenderer(renderer);*/
 	SDL_DestroyWindow(window);
 
 	return 0;

@@ -13,6 +13,8 @@
 #include <vector>
 #include "SDL.h"
 #include "MapLoader.h"
+#include "Unit.h"
+namespace kingdom {
 class TileMap {
 public:
 	TileMap(MapLoader* generator, SDL_Texture* tileset);
@@ -22,9 +24,10 @@ public:
 private:
 	SDL_Texture* tileset;
 	std::vector<short> mapData;
+	std::vector<Unit*> mapUnits;
 	int mapW;
 	int mapH;
 
 };
-
+}
 #endif /* TILEMAP_H_ */
