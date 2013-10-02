@@ -22,4 +22,4 @@ public:
 };
 
 } /* namespace std */
-#endif /* INGAMESTATE_H_ */b
+#endif /* INGAMESTATE_H_ */
