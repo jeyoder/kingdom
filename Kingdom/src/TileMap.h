@@ -11,7 +11,7 @@
 #include <string>
 #include <fstream>
 #include <vector>
-#include "SDL.h"
+
 #include "MapLoader.h"
 #include "Unit.h"
 namespace kingdom {
@@ -19,12 +19,18 @@ class TileMap {
 public:
 	TileMap(MapLoader* generator, SDL_Texture* tileset);
 	virtual ~TileMap();
+	void draw(SDL_Renderer* renderer, SDL_Window* window, double tileX, double tileY);
+	int tileAt(int x, int y);
+	int getW();
+	int getH();
+	std::vector<short> mapData;
 	const int tileW = 32;
 	const int tileH = 32;
 private:
 	SDL_Texture* tileset;
-	std::vector<short> mapData;
+
 	std::vector<Unit*> mapUnits;
+
 	int mapW;
 	int mapH;
 

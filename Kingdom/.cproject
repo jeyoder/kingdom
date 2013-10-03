@@ -25,8 +25,8 @@
 								<option id="gnu.cpp.compiler.mingw.exe.debug.option.optimization.level.131057568" name="Optimization Level" superClass="gnu.cpp.compiler.mingw.exe.debug.option.optimization.level" value="gnu.cpp.compiler.optimization.level.none" valueType="enumerated"/>
 								<option id="gnu.cpp.compiler.mingw.exe.debug.option.debugging.level.871622433" name="Debug Level" superClass="gnu.cpp.compiler.mingw.exe.debug.option.debugging.level" value="gnu.cpp.compiler.debugging.level.max" valueType="enumerated"/>
 								<option id="gnu.cpp.compiler.option.include.paths.1559865359" name="Include paths (-I)" superClass="gnu.cpp.compiler.option.include.paths" valueType="includePath">
-									<listOptionValue builtIn="false" value="&quot;C:\Users\crhscs115\Documents\WorkspaceC\SDL\SDL2_image-2.0.0\i686-w64-mingw32\include\SDL2&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;C:\Users\crhscs115\Documents\WorkspaceC\SDL\SDL2-2.0.0\i686-w64-mingw32\include\SDL2&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/SDL/SDL2-2.0.0/i686-w64-mingw32/include/SDL2}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/SDL/SDL2_image-2.0.0/i686-w64-mingw32/include/SDL2}&quot;"/>
 								</option>
 								<option id="gnu.cpp.compiler.option.other.other.1811958545" name="Other flags" superClass="gnu.cpp.compiler.option.other.other" value="-c -fmessage-length=0 -std=c++11" valueType="string"/>
 								<inputType id="cdt.managedbuild.tool.gnu.cpp.compiler.input.954371219" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.input"/>
@@ -59,8 +59,8 @@
 									<listOptionValue builtIn="false" value="uuid"/>
 								</option>
 								<option id="gnu.cpp.link.option.paths.1290663384" name="Library search path (-L)" superClass="gnu.cpp.link.option.paths" valueType="libPaths">
-									<listOptionValue builtIn="false" value="&quot;C:\Users\crhscs115\Documents\WorkspaceC\SDL\SDL2-2.0.0\i686-w64-mingw32\lib&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;C:\Users\crhscs115\Documents\WorkspaceC\SDL\SDL2_image-2.0.0\i686-w64-mingw32\lib&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/SDL/SDL2-2.0.0/i686-w64-mingw32/lib}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/SDL/SDL2_image-2.0.0/i686-w64-mingw32/lib}&quot;"/>
 								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.cpp.linker.input.1642672619" superClass="cdt.managedbuild.tool.gnu.cpp.linker.input">
 									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
@@ -144,4 +144,5 @@
 			<resource resourceType="PROJECT" workspacePath="/Kingdom"/>
 		</configuration>
 	</storageModule>
+	<storageModule moduleId="org.eclipse.cdt.internal.ui.text.commentOwnerProjectMappings"/>
 </cproject>

@@ -11,7 +11,9 @@
 #include <fstream>
 #include <vector>
 #include <iostream>
-class FileMapGenerator {
+#include "MapLoader.h"
+#include <string>
+class FileMapGenerator : public MapLoader{
 public:
 	FileMapGenerator(std::ifstream* stream);
 	virtual ~FileMapGenerator();
@@ -22,7 +24,8 @@ private:
 	std::ifstream* stream;
 	int mapWidth;
 	int mapHeight;
-	int stringToInt;
+	int stringToInt(const std::string& str);
+	std::vector<short> data;
 };
 
 #endif /* FILEMAPGENERATOR_H_ */

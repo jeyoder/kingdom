@@ -16,7 +16,7 @@ class King: public kingdom::Unit {
 public:
 	King(int,int ,int);
 	virtual ~King();
-	void render(SDL_Renderer*, SDL_Window*);
+	//void render(SDL_Renderer*, SDL_Window*);
 };
 
 } /* namespace kingdom */
