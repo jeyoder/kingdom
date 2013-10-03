@@ -6,7 +6,7 @@
  */
 
 #include "Unit.h"
-
+#include "ResourceLoader.h"
 namespace kingdom {
 
 Unit::Unit(int PlayerNumber, int TileX, int TileY) : Drawable(){

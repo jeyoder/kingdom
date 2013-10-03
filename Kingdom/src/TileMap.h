@@ -14,13 +14,15 @@
 
 #include "MapLoader.h"
 #include "Unit.h"
+#include "ResourceLoader.h"
 namespace kingdom {
 class TileMap {
 public:
-	TileMap(MapLoader* generator, SDL_Texture* tileset);
+	TileMap(MapLoader* generator, SDL_Texture* tileset, ResourceLoader* Loader);
 	virtual ~TileMap();
 	void draw(SDL_Renderer* renderer, SDL_Window* window, double tileX, double tileY);
 	int tileAt(int x, int y);
+	Unit* unitAt(int x, int y);
 	int getW();
 	int getH();
 	std::vector<short> mapData;
@@ -33,7 +35,7 @@ private:
 
 	int mapW;
 	int mapH;
-
+	ResourceLoader* theLoader;
 };
 }
 #endif /* TILEMAP_H_ */

@@ -30,7 +30,7 @@ int main(int argc, char* argv[]) {
 
 	ResourceLoader* loader = ResourceLoader::getInstance(renderer);
 	loader->loadTexture("assets/thor.png");
-	SDL_Texture *texture = loader->loadTexture("assets/thor.png");
+	//SDL_Texture *texture = loader->loadTexture("assets/thor.png");
 
 	loader->loadTexture("assets/KingGreen.png");
 	loader->loadTexture("assets/KingRed.png");
@@ -44,7 +44,7 @@ int main(int argc, char* argv[]) {
 	}
 	cout << "Tilemap opened successfully" << endl;
 	FileMapGenerator generator(&stream);
-	TileMap map = TileMap(&generator, tileset);
+	TileMap map = TileMap(&generator, tileset, loader);
 	cout << "Map loaded" << endl;
 	cout << "Map width: " << map.getW() << endl;
 	cout << "Map height: " << map.getH() << endl;
