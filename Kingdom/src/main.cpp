@@ -48,15 +48,15 @@ int main(int argc, char* argv[]) {
 	cout << "Map loaded" << endl;
 	cout << "Map width: " << map.getW() << endl;
 	cout << "Map height: " << map.getH() << endl;
+
 	cout << map.mapData.size() << " tiles" << endl;
 	cout.flush();
-
 	//Initialize App State
 	InGameState currentAppState = InGameState();
 	//Game Loop
 	double tileX = 40;
 	double tileY = 40;
-	double moveSpeed = .1;
+	double moveSpeed = .05;
 	clock_t startTime;
 	int frameCount = 0;
 	startTime = clock();

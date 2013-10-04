@@ -17,7 +17,7 @@ class Unit: public Drawable {
 private:
 	int tileX, tileY;
 	int playerNum;
-
+	SDL_Texture* myTexture;
 
 protected:
 	virtual void render(SDL_Renderer*, SDL_Window*);

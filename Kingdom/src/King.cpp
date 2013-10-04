@@ -16,7 +16,7 @@ namespace kingdom {
 
 	}
 	SDL_Texture* King::getTexture(ResourceLoader* Loader){
-		return Loader->loadTexture("assets/KingGreen");
+		return Loader->loadTexture("assets/KingGreen.png");
 	}
 
 	King::~King() {

@@ -24,8 +24,8 @@ TileMap::TileMap(MapLoader* generator, SDL_Texture* tileset, ResourceLoader* Loa
 	this->theLoader = Loader;
 	//mapUnits = std::vector<std::vector<Unit> > (this->mapW); //create a 2d vector containing units
 	mapUnits = std::vector<Unit*> (this->mapW*this->mapH); //create a 2d vector containing units
-	mapUnits[5] = new King(0,5,5);
-	delete mapUnits[5];
+	mapUnits[50*50+50] = new King(0,5,5);
+	//delete mapUnits[5];
 }
 
 TileMap::~TileMap() {
@@ -59,7 +59,10 @@ void TileMap::draw(SDL_Renderer* renderer, SDL_Window* window, double tileX, dou
 			destRect.h = tileH;
 
 			SDL_RenderCopy(renderer, tileset, &srcRect, &destRect);
-			//SDL_RenderCopy(renderer, drawingUnit->getTexture(theLoader), NULL, &destRect);
+			if(drawingUnit != NULL){
+				SDL_RenderCopy(renderer, drawingUnit->getTexture(theLoader), NULL, &destRect);
+			}
+
 		};
 	}
 }
