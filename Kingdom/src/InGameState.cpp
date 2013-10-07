@@ -15,21 +15,30 @@
  * */
 namespace kingdom {
 
-InGameState::InGameState() {
-	// TODO Auto-generated constructor stub
-
+InGameState::InGameState(TileMap* map) {
+	this->map = map;
+	this->tileX = 50;
+	this->tileY = 50;
 }
-bool InGameState::render(){
-	//Render
-	//TODO render map
-	//TODO render Units
-	//TODO render Unit-to-Unit and Unit-to-Map interactions
-	//TODO render UI
-
+bool InGameState::render(SDL_Renderer* renderer, SDL_Window* window, double delta, const Uint8* keystates){
+	double scrollAmt = delta * scrollSpeed;
+	if(keystates[SDL_SCANCODE_A]) {
+		tileX -= scrollAmt;
+	}
+	if(keystates[SDL_SCANCODE_D]) {
+		tileX += scrollAmt;
+	}
+	if(keystates[SDL_SCANCODE_W]) {
+		tileY -= scrollAmt;
+	}
+	if(keystates[SDL_SCANCODE_S]) {
+		tileY += scrollAmt;
+	}
+	map->draw(renderer, window, tileX, tileY);
 	return true; //succesful render
 }
 InGameState::~InGameState() {
-	// TODO Auto-generated destructor stub
+	delete map;
 }
 
 } /* namespace std */

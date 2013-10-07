@@ -8,23 +8,12 @@
 #include "ResourceLoader.h"
 
 using namespace std;
-ResourceLoader::ResourceLoader() {
-
+ResourceLoader::ResourceLoader(SDL_Renderer* renderer) {
+	this->renderer = renderer;
 }
 
 ResourceLoader::~ResourceLoader() {
 
-}
-
-SDL_Renderer* ResourceLoader::renderer = NULL;
-ResourceLoader* ResourceLoader::instance = NULL;
-
-ResourceLoader* ResourceLoader::getInstance(SDL_Renderer* renderer) {
-	if (ResourceLoader::instance == NULL) {
-		ResourceLoader::renderer = renderer;
-		ResourceLoader::instance = new ResourceLoader();
-	}
-	return ResourceLoader::instance;
 }
 
 SDL_Texture* ResourceLoader::loadTexture(std::string filename) {
@@ -35,7 +24,7 @@ SDL_Texture* ResourceLoader::loadTexture(std::string filename) {
 		return textureMap[filename];
 	} else {
 		cout << filename << " not cached" << endl;
-		texture = IMG_LoadTexture(ResourceLoader::renderer, filename.c_str());
+		texture = IMG_LoadTexture(renderer, filename.c_str());
 		if(texture) {
 			textureMap[filename] = texture;
 			cout << filename << " successfully loaded from file" << endl;

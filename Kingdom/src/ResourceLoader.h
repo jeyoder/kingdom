@@ -16,20 +16,14 @@
 
 class ResourceLoader {
 public:
-	static ResourceLoader* getInstance(SDL_Renderer* renderer);
-
+	ResourceLoader(SDL_Renderer* renderer);
 	virtual ~ResourceLoader();
 	SDL_Texture* loadTexture(std::string filename);
 protected:
 
 private:
-	static SDL_Renderer* renderer;
-	static ResourceLoader* instance;
-
-	ResourceLoader();
+	SDL_Renderer* renderer;
 	std::map <std::string, SDL_Texture*> textureMap;
-
-
 };
 
 #endif /* RESOURCELOADER_H_ */
