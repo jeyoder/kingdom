@@ -17,6 +17,7 @@ public:
 	King(int,int ,int);
 	virtual ~King();
 	//void render(SDL_Renderer*, SDL_Window*);
+	virtual SDL_Texture* getTexture(ResourceLoader* Loader);
 };
 
 } /* namespace kingdom */

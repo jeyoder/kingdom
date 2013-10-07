@@ -12,17 +12,20 @@
 #include "Unit.h"
 #include <vector>
 #include "King.h"
+#include "ResourceLoader.h"
 using namespace std;
 namespace kingdom {
-TileMap::TileMap(MapLoader* generator, SDL_Texture* tileset) {
+
+TileMap::TileMap(MapLoader* generator, SDL_Texture* tileset, ResourceLoader* Loader) {
 	this->tileset = tileset;
 	this->mapW = generator->getWidth();
 	this->mapH = generator->getHeight();
 	this->mapData = generator->getData();
+	this->theLoader = Loader;
 	//mapUnits = std::vector<std::vector<Unit> > (this->mapW); //create a 2d vector containing units
-	mapUnits = std::vector<Unit*> (this->mapW); //create a 2d vector containing units
-	mapUnits[5] = new King(0,5,5);
-	delete mapUnits[5];
+	mapUnits = std::vector<Unit*> (this->mapW*this->mapH); //create a 2d vector containing units
+	mapUnits[50*50+50] = new King(0,5,5);
+	//delete mapUnits[5];
 }
 
 TileMap::~TileMap() {
@@ -42,6 +45,7 @@ void TileMap::draw(SDL_Renderer* renderer, SDL_Window* window, double tileX, dou
 	for (int x = minTileX; x <= maxTileX; x++) {
 		for (int y = minTileY; y <= maxTileY; y++) {
 			int srcTile = tileAt(x, y);
+			Unit* drawingUnit = unitAt(x, y);
 			SDL_Rect srcRect = {};
 			srcRect.x = (srcTile - 1) * tileW;
 			srcRect.y = 0;
@@ -55,13 +59,19 @@ void TileMap::draw(SDL_Renderer* renderer, SDL_Window* window, double tileX, dou
 			destRect.h = tileH;
 
 			SDL_RenderCopy(renderer, tileset, &srcRect, &destRect);
+			if(drawingUnit != NULL){
+				SDL_RenderCopy(renderer, drawingUnit->getTexture(theLoader), NULL, &destRect);
+			}
+
 		};
 	}
 }
 int TileMap::tileAt(int x, int y) {
-return mapData.at(y * mapW + x);
+	return mapData.at(y * mapW + x);
 }
-
+Unit* TileMap::unitAt(int x, int y) {
+	return mapUnits.at(y * mapW + x);
+}
 int TileMap::getW() {
 return mapW;
 }

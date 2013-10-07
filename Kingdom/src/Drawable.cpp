@@ -6,7 +6,8 @@
  */
 
 #include "Drawable.h"
-
+#include "ResourceLoader.h"
+namespace kingdom {
 Drawable::Drawable() {
 	// TODO Auto-generated constructor stub
 
@@ -16,3 +17,4 @@ Drawable::~Drawable() {
 	// TODO Auto-generated destructor stub
 }
 
+}
