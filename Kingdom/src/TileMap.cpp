@@ -16,12 +16,12 @@
 using namespace std;
 namespace kingdom {
 
-TileMap::TileMap(MapLoader* generator, SDL_Texture* tileset, ResourceLoader* Loader) {
+TileMap::TileMap(MapLoader* generator, SDL_Texture* tileset) {
 	this->tileset = tileset;
 	this->mapW = generator->getWidth();
 	this->mapH = generator->getHeight();
 	this->mapData = generator->getData();
-	this->theLoader = Loader;
+	//this->theLoader = Loader;
 	//mapUnits = std::vector<std::vector<Unit> > (this->mapW); //create a 2d vector containing units
 	mapUnits = std::vector<Unit*> (this->mapW*this->mapH); //create a 2d vector containing units
 	mapUnits[50*50+50] = new King(0,5,5);
