@@ -9,6 +9,7 @@
 #include <ctime>
 #include "SDL.h"
 #include "SDL_image.h"
+#include "SDL_ttf.h"
 #include "ResourceLoader.h"
 #include "AppState.h"
 #include "InGameState.h"
@@ -28,7 +29,13 @@ int main(int argc, char* argv[]) {
 	SDL_Renderer* renderer = SDL_CreateRenderer(window, -1,
 			SDL_RENDERER_ACCELERATED);
 	cout << "SDL initialized" << endl;
-
+	// Initialize SDL_ttf library
+		   if (TTF_Init() != 0)
+		   {
+		      cerr << "TTF_Init() Failed: " << TTF_GetError() << endl;
+		      SDL_Quit();
+		      exit(1);
+		   }
 	Game game(renderer, window);
 	game.run();
 	SDL_DestroyRenderer(renderer);

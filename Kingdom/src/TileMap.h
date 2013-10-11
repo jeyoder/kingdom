@@ -18,7 +18,7 @@
 namespace kingdom {
 class TileMap {
 public:
-	TileMap(MapLoader* generator, SDL_Texture* tileset, ResourceLoader* Loader);
+	TileMap(MapLoader* generator, SDL_Texture* tileset);
 	virtual ~TileMap();
 	void draw(SDL_Renderer* renderer, SDL_Window* window, double tileX, double tileY);
 	int tileAt(int x, int y);
