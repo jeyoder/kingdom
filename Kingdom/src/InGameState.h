@@ -9,6 +9,8 @@
 #define INGAMESTATE_H_
 
 #include <string>
+#include <vector>
+#include "SDL.h"
 #include "AppState.h"
 #include "TileMap.h"
 namespace kingdom {
@@ -17,14 +19,16 @@ namespace kingdom {
  * */
 class InGameState: public kingdom::AppState {
 public:
-	InGameState(TileMap* map);
+	InGameState(MapLoader* loader, std::string tile);
 	virtual ~InGameState();
-	bool render(SDL_Renderer* renderer, SDL_Window* window, double delta, const Uint8* keystates);
+	bool render(SDL_Renderer* renderer, SDL_Window* window, double delta, const Uint8* keystates, std::vector<SDL_Event> &events);
 private:
 	TileMap* map;
 	double tileX;
 	double tileY;
-	const double scrollSpeed = 0.1;
+	double scale;
+	int mouseZoom;
+	const double scrollSpeed = 0.01;
 };
 
 } /* namespace std */

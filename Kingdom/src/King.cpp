@@ -9,14 +9,14 @@
 #include "Unit.h"
 #include "SDL.h"
 #include "ResourceLoader.h"
+#include "Game.h"
 namespace kingdom {
 
 	King::King(int PlayerNumber, int TileX, int TileY) : kingdom::Unit(PlayerNumber,TileX,TileY)  {
-		// TODO Auto-generated constructor stub
-
+		texture = ResourceLoader::getInstance()->loadTexture("assets/KingGreen.png");
 	}
 	SDL_Texture* King::getTexture(ResourceLoader* Loader){
-		return Loader->loadTexture("assets/KingGreen.png");
+		return texture;
 	}
 
 	King::~King() {

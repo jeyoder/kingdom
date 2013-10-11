@@ -15,13 +15,12 @@
 #include <string>
 class FileMapGenerator : public MapLoader{
 public:
-	FileMapGenerator(std::ifstream* stream);
+	FileMapGenerator(std::string filename);
 	virtual ~FileMapGenerator();
 	std::vector<short> getData();
 	int getWidth();
 	int getHeight();
 private:
-	std::ifstream* stream;
 	int mapWidth;
 	int mapHeight;
 	int stringToInt(const std::string& str);
