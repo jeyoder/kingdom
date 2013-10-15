@@ -20,7 +20,7 @@
 #include <sstream>
 #include <stdio.h>
 #include <stdlib.h>
-#include <ctime>
+//#include <ctime>
 
 #include <iostream>
 #include <cmath>
@@ -50,9 +50,9 @@ InGameState::InGameState(MapLoader* loader, std::string tileset) {
 	  SDL_Quit();
 	  exit(1);
    }
-   //lastTurnTime = clock();
-  // time(&lastTurnTime); //set last time
 
+  // time(&lastTurnTime); //set last time
+   	timeSinceLastTurn = 0;
 	this->scale = 1.0;
 	this->mouseZoom = 0;
 }
@@ -71,7 +71,14 @@ InGameState::InGameState(MapLoader* loader, std::string tileset) {
 	}*/
 
 bool InGameState::render(SDL_Renderer* renderer, SDL_Window* window, double delta, const Uint8* keystates, vector<SDL_Event> &events){
-
+	//Game Logic
+	timeSinceLastTurn += delta;
+	std::cout << turnLength;
+	cout.flush();
+	if(timeSinceLastTurn >= turnLength){
+		nextTurn();
+		timeSinceLastTurn = timeSinceLastTurn - turnLength;
+	}
 	double scrollAmt = delta * scrollSpeed;
 	if(keystates[SDL_SCANCODE_A]) {
 		tileX -= scrollAmt;

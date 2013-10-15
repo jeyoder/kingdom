@@ -40,8 +40,10 @@ private:
 	turnState currentTurnState;
 	SDL_Surface* textSurface;
 	SDL_Texture* textTexture;
-	time_t turnTimer;
-	double turnLength;
+	//time_t turnTimer;
+	//clock_t lastTurnTime;
+	double timeSinceLastTurn;
+	double turnLength = 5000;
 	std::stringstream stringMaker;
 	TTF_Font *font;
 	double scale;
