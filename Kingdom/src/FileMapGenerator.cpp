@@ -11,14 +11,18 @@
 #include <iostream>
 #include <string>
 #include <istream>
+#include <fstream>
 using namespace std;
-FileMapGenerator::FileMapGenerator(std::ifstream* stream) {
-	this->stream = stream;
+FileMapGenerator::FileMapGenerator(std::string filename) {
+	std::ifstream stream(filename);
+	if(!stream.is_open()) {
+		throw("Map file open failed!");
+	}
 	this->mapWidth = -1;
 	this->mapHeight = -1;
-	while (!stream->eof()) {
+	while (!stream.eof()) {
 		std::string line;
-		getline(*stream, line);
+		getline(stream, line);
 		size_t pos = line.find_first_of('=');
 		string head = line.substr(0, pos);
 		if (pos != string::npos) {
@@ -30,7 +34,7 @@ FileMapGenerator::FileMapGenerator(std::ifstream* stream) {
 				this->mapHeight = stringToInt(body);
 			} else if (head == "data") {
 				for(int i=0; i<mapHeight; i++) { // get each line in the data section
-					getline(*stream, line);
+					getline(stream, line);
 					std::stringstream row(line);
 					string tile;
 					while (getline(row, tile, ',')) { //get each individual tile, separated by commas

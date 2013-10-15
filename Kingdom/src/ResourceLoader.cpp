@@ -8,6 +8,7 @@
 #include "ResourceLoader.h"
 
 using namespace std;
+ResourceLoader* ResourceLoader::instance = NULL;
 ResourceLoader::ResourceLoader(SDL_Renderer* renderer) {
 	this->renderer = renderer;
 }
@@ -34,5 +35,13 @@ SDL_Texture* ResourceLoader::loadTexture(std::string filename) {
 			return NULL;
 		}
 	}
+}
+
+void ResourceLoader::initialize(SDL_Renderer* renderer) {
+	instance = new ResourceLoader(renderer);
+}
+
+ResourceLoader* ResourceLoader::getInstance() {
+	return instance;
 }
 

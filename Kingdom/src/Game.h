@@ -17,7 +17,6 @@ public:
 	Game(SDL_Renderer* renderer, SDL_Window* window);
 	virtual ~Game();
 	void run();
-	ResourceLoader* getResourceLoader();
 	AppState& getAppState();
 	void setAppState(AppState* state);
 	Uint8* getKeyStates();
@@ -25,7 +24,6 @@ private:
 	SDL_Renderer* renderer;
 	SDL_Window* window;
 	AppState* state;
-	ResourceLoader* loader;
 	const Uint8* keystates;
 };
 

@@ -18,6 +18,8 @@ public:
 	virtual ~King();
 	//void render(SDL_Renderer*, SDL_Window*);
 	virtual SDL_Texture* getTexture(ResourceLoader* Loader);
+private:
+	SDL_Texture* texture;
 };
 
 } /* namespace kingdom */

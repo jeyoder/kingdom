@@ -27,7 +27,7 @@ int main(int argc, char* argv[]) {
 	window = SDL_CreateWindow("Resource Loader", 100, 100, 1024, 768,
 			SDL_WINDOW_OPENGL);
 	SDL_Renderer* renderer = SDL_CreateRenderer(window, -1,
-			SDL_RENDERER_ACCELERATED);
+			SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 	cout << "SDL initialized" << endl;
 	// Initialize SDL_ttf library
 		   if (TTF_Init() != 0)
@@ -36,6 +36,8 @@ int main(int argc, char* argv[]) {
 		      SDL_Quit();
 		      exit(1);
 		   }
+
+	ResourceLoader::initialize(renderer);
 	Game game(renderer, window);
 	game.run();
 	SDL_DestroyRenderer(renderer);

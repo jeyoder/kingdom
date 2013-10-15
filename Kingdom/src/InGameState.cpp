@@ -10,6 +10,7 @@
 
 #include "InGameState.h"
 #include "AppState.h"
+
 #include <string>
 #include <iostream>
 #include "SDL.h"
@@ -20,6 +21,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <ctime>
+
+#include <iostream>
+#include <cmath>
+
 /*The state that is the game is in while actually playing.
  * Would handle low level aspects of actually running the game such as rendering, taking userimput, and some help in coordinating network communication
  * */
@@ -27,10 +32,12 @@ using namespace std;
 namespace kingdom {
 using namespace std;
 
-InGameState::InGameState(TileMap* map) {
-	this->map = map;
+InGameState::InGameState(MapLoader* loader, std::string tileset) {
+	SDL_Texture* tileTexture = ResourceLoader::getInstance()->loadTexture(tileset);
+	this->map = new TileMap(loader,tileTexture);
 	this->tileX = 50;
 	this->tileY = 50;
+
 	this->currentTurnState = Input;
 	this->turnNumber = 0;
 	this->turnLength = 5; //5 second turn time
@@ -46,8 +53,11 @@ InGameState::InGameState(TileMap* map) {
    //lastTurnTime = clock();
   // time(&lastTurnTime); //set last time
 
+	this->scale = 1.0;
+	this->mouseZoom = 0;
 }
-bool InGameState::render(SDL_Renderer* renderer, SDL_Window* window, double delta, const Uint8* keystates){
+
+//bool InGameState::render(SDL_Renderer* renderer, SDL_Window* window, double delta, const Uint8* keystates){
 	//Check Game Stuff
 	//time_t now;
 	//time(&now);
@@ -59,6 +69,8 @@ bool InGameState::render(SDL_Renderer* renderer, SDL_Window* window, double delt
 		nextTurn();
 		time(&lastTurnTime); //store new time
 	}*/
+
+bool InGameState::render(SDL_Renderer* renderer, SDL_Window* window, double delta, const Uint8* keystates, vector<SDL_Event> &events){
 
 	double scrollAmt = delta * scrollSpeed;
 	if(keystates[SDL_SCANCODE_A]) {
@@ -73,8 +85,16 @@ bool InGameState::render(SDL_Renderer* renderer, SDL_Window* window, double delt
 	if(keystates[SDL_SCANCODE_S]) {
 		tileY += scrollAmt;
 	}
-	//Render Map
-	map->draw(renderer, window, tileX, tileY);
+	//Render map
+	for(SDL_Event e : events) {
+			if(e.type == SDL_MOUSEWHEEL) {
+				cout << "z: " << scale << endl;
+				mouseZoom += e.wheel.y;
+				scale = pow(2, (mouseZoom + 1) * 0.1);
+			}
+		}
+		map->draw(renderer, window, tileX, tileY, scale);
+
 	//Render UI
 	// Write text to surface
 	std::stringstream oss;
@@ -103,6 +123,8 @@ bool InGameState::render(SDL_Renderer* renderer, SDL_Window* window, double delt
 	SDL_GetWindowSize(window, &windowW, &windowH);
 	SDL_Rect destRect = {windowW-textSurface->w-10,10,textSurface->w,textSurface->h};
 	SDL_RenderCopy(renderer, this->textTexture, NULL, &destRect);
+
+
 	return true; //succesful render
 }
 InGameState::turnState InGameState::getTurnState(){

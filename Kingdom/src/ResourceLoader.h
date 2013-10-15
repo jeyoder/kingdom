@@ -19,9 +19,12 @@ public:
 	ResourceLoader(SDL_Renderer* renderer);
 	virtual ~ResourceLoader();
 	SDL_Texture* loadTexture(std::string filename);
+	static ResourceLoader* getInstance();
+	static void initialize(SDL_Renderer* renderer);
 protected:
 
 private:
+	static ResourceLoader* instance;
 	SDL_Renderer* renderer;
 	std::map <std::string, SDL_Texture*> textureMap;
 };
