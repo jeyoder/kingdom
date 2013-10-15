@@ -19,7 +19,7 @@
 #include <sstream>
 #include <stdio.h>
 #include <stdlib.h>
-
+#include <ctime>
 /*The state that is the game is in while actually playing.
  * Would handle low level aspects of actually running the game such as rendering, taking userimput, and some help in coordinating network communication
  * */
