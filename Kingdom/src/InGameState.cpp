@@ -113,9 +113,10 @@ bool InGameState::render(SDL_Renderer* renderer, SDL_Window* window, double delt
 	strcat(topText,)*/
 	//oss.str();
 	SDL_Color text_color = {255, 255, 255};
-   textSurface = TTF_RenderText_Solid(font,
+   textSurface = TTF_RenderText_Blended(font,
 		   oss.str().c_str(),
    text_color);
+
    if (textSurface == NULL)
    {
 	  cerr << "TTF_RenderText_Solid() Failed: " << TTF_GetError() << endl;
