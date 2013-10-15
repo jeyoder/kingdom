@@ -43,7 +43,7 @@ private:
 	//time_t turnTimer;
 	//clock_t lastTurnTime;
 	double timeSinceLastTurn;
-	double turnLength = 5000;
+	double turnLength;
 	std::stringstream stringMaker;
 	TTF_Font *font;
 	double scale;
