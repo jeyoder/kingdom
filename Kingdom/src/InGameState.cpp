@@ -44,7 +44,7 @@ bool InGameState::render(SDL_Renderer* renderer, SDL_Window* window, double delt
 		if(e.type == SDL_MOUSEWHEEL) {
 			cout << "z: " << scale << endl;
 			mouseZoom += e.wheel.y;
-			scale = pow(2, (mouseZoom + 1) * 0.1);
+			scale = pow(2, (mouseZoom + 1) * 0.15);
 		}
 	}
 	map->draw(renderer, window, tileX, tileY, scale);
