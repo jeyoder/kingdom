@@ -73,12 +73,12 @@ InGameState::InGameState(MapLoader* loader, std::string tileset) {
 bool InGameState::render(SDL_Renderer* renderer, SDL_Window* window, double delta, const Uint8* keystates, vector<SDL_Event> &events){
 	//Game Logic
 	timeSinceLastTurn += delta;
-	std::cout << turnLength;
-	cout.flush();
-	if(timeSinceLastTurn >= turnLength){
-		nextTurn();
-		timeSinceLastTurn = timeSinceLastTurn - turnLength;
-	}
+	//std::cout << turnLength;
+	//cout.flush();
+	//if(timeSinceLastTurn >= turnLength){
+		//nextTurn();
+		//timeSinceLastTurn = timeSinceLastTurn - turnLength;
+	//}
 	double scrollAmt = delta * scrollSpeed;
 	if(keystates[SDL_SCANCODE_A]) {
 		tileX -= scrollAmt;
@@ -94,14 +94,13 @@ bool InGameState::render(SDL_Renderer* renderer, SDL_Window* window, double delt
 	}
 	//Render map
 	for(SDL_Event e : events) {
-			if(e.type == SDL_MOUSEWHEEL) {
-				cout << "z: " << scale << endl;
-				mouseZoom += e.wheel.y;
-				scale = pow(2, (mouseZoom + 1) * 0.1);
-			}
+		if(e.type == SDL_MOUSEWHEEL) {
+			cout << "z: " << scale << endl;
+			mouseZoom += e.wheel.y;
+			scale = pow(2, (mouseZoom + 1) * 0.15);
 		}
+	}
 		map->draw(renderer, window, tileX, tileY, scale);
-
 	//Render UI
 	// Write text to surface
 	std::stringstream oss;
