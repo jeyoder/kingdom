@@ -28,7 +28,7 @@ public:
 	virtual ~InGameState();
 
 
-	enum turnState {Input, Processing, AnimatingTurn}; //tells what state turn is in. Will go something like "Input -> SyncingTurn -> AnimatingTurn -> Input -> ect."
+	enum turnState {Input, Processing, Animating}; //tells what state turn is in. Will go something like "Input -> SyncingTurn -> AnimatingTurn -> Input -> ect."
 	turnState getTurnState();
 	void nextTurn();
 	bool render(SDL_Renderer* renderer, SDL_Window* window, double delta, const Uint8* keystates, std::vector<SDL_Event> &events);

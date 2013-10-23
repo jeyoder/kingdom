@@ -7,6 +7,7 @@
 
 #include "Unit.h"
 #include "ResourceLoader.h"
+#include "Order.h"
 namespace kingdom {
 
 Unit::Unit(int PlayerNumber, int TileX, int TileY) : Drawable(){
@@ -22,10 +23,25 @@ Unit::Unit(int PlayerNumber, int TileX, int TileY) : Drawable(){
 			this->myImagePlayerSufix = "Red";
 			break;
 	}
+	orders = vector<Order*>();
 }
 void Unit::render(SDL_Renderer* Renderer,SDL_Window* Window){
 
 }
+void Unit::giveOrder(Order* theOrder){
+	this->orders.push_back(theOrder);
+}
+void Unit::nextUnitTurn(){
+	for(int i = 0; i < orders.size(); i++){
+		orders.at(i)->decrementTurns();
+	}
+	if(orders.at(0)->getTurnsTillExecute <= 0){
+		orders.at(0)->activated = true;
+	}
+
+	//this->unitTurnState = Animating;
+}
+
 Unit::~Unit() {
 	// TODO Auto-generated destructor stub
 }

@@ -28,6 +28,7 @@ public:
 	std::vector<short> mapData;
 	const int tileW = 64;
 	const int tileH = 64;
+	std::vector<Unit*> getUnitsList();
 private:
 	SDL_Texture* tileset;
 
@@ -36,6 +37,7 @@ private:
 	int mapW;
 	int mapH;
 	ResourceLoader* theLoader;
+
 };
 }
 #endif /* TILEMAP_H_ */

@@ -11,16 +11,21 @@
 #include <vector>
 #include "Unit.h"
 #include "WayPoint.h"
+#include "Order.h"
 namespace kingdom {
-using namespace std;
+class Unit;
 class Order {
 private:
 	Unit* toWho;
 	std::vector<WayPoint*> waypoints;
 	int turnsTillExecute;
 public:
-	Order(Unit *ToWho, std::vector<WayPoint*> Waypoints, int TurnsTillExecute);
+	Order(Unit* ToWho, std::vector<WayPoint*> Waypoints, int TurnsTillExecute);
 	virtual ~Order();
+	void decrementTurns();
+	bool activated;
+	int getTurnsTillExecute;
+	WayPoint nextClosestTile(int myX, );
 };
 
 } /* namespace kingdom */

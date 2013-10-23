@@ -14,8 +14,11 @@ Order::Order(Unit *ToWho, std::vector<WayPoint*> Waypoints, int TurnsTillExecute
 	this->toWho = ToWho;
 	this->waypoints = Waypoints;
 	this->turnsTillExecute = TurnsTillExecute;
+	this->
 }
-
+void Order::decrementTurns(){
+	turnsTillExecute--;
+}
 Order::~Order() {
 	// TODO Auto-generated destructor stub
 }

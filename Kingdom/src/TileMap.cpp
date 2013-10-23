@@ -25,7 +25,8 @@ TileMap::TileMap(MapLoader* generator, SDL_Texture* tileset) {
 	//mapUnits = std::vector<std::vector<Unit> > (this->mapW); //create a 2d vector containing units
 	mapUnits = std::vector<Unit*> (this->mapW*this->mapH); //create a 2d vector containing units
 	mapUnits[50*50+50] = new King(0,5,5);
-	//delete mapUnits[5];
+	//delete mapUnits[50*50+50];
+
 }
 
 TileMap::~TileMap() {
@@ -75,6 +76,16 @@ int TileMap::tileAt(int x, int y) {
 Unit* TileMap::unitAt(int x, int y) {
 	return mapUnits.at(y * mapW + x);
 }
+std::vector<Unit*> TileMap::getUnitsList(){
+	std::vector<Unit*> cleanList;
+	for(unsigned int i = 0; i < this->mapUnits.size(); i++){
+		if(mapUnits.at(i) != NULL){
+			cleanList.push_back(mapUnits.at(i));
+		}
+	}
+	return cleanList;
+}
+
 int TileMap::getW() {
 return mapW;
 }

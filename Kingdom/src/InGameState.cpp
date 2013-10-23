@@ -21,7 +21,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 //#include <ctime>
-
+#include <vector>
 #include <iostream>
 #include <cmath>
 
@@ -138,7 +138,15 @@ InGameState::turnState InGameState::getTurnState(){
 	return this->currentTurnState;
 }
 void InGameState::nextTurn(){
+	this->currentTurnState = Processing;
 	cout << "Next Turn";
+	//Tell all the units to take their turn
+	std::vector<Unit*> unitList = this->map->getUnitsList();
+	for(unsigned int i = 0; i < unitList.size(); i++){
+		unitList.at(i)->nextUnitTurn();
+	}
+	//Change turn state
+	this->currentTurnState = Animating; //Will remain in animated state until all units report their state to input
 }
 InGameState::~InGameState() {
 	delete map;
