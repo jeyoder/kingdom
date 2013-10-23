@@ -15,7 +15,6 @@ namespace kingdom {
 
 class Unit: public Drawable {
 private:
-	int tileX, tileY;
 	int playerNum;
 
 protected:
@@ -23,6 +22,7 @@ protected:
 	std::string myImagePlayerSufix;
 	std::string myImagePlayerPrefix;
 public:
+	int tileX, tileY;
 	Unit(int,int,int);
 	virtual ~Unit();
 	virtual SDL_Texture* getTexture(ResourceLoader* Loader) = 0;

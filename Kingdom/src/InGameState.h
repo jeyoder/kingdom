@@ -34,20 +34,17 @@ public:
 	bool render(SDL_Renderer* renderer, SDL_Window* window, double delta, const Uint8* keystates, std::vector<SDL_Event> &events);
 private:
 	TileMap* map;
-	double tileX;
-	double tileY;
+	double tileX; // x and y of the center of the screen, in tiles. changes with
+	double tileY; // scrolling
 	int turnNumber = 0;
 	turnState currentTurnState;
-	SDL_Surface* textSurface;
-	SDL_Texture* textTexture;
-	//time_t turnTimer;
-	//clock_t lastTurnTime;
 	double timeSinceLastTurn;
 	double turnLength;
+	std::vector<Unit*> selectedUnits;
 	std::stringstream stringMaker;
 	TTF_Font *font;
-	double scale;
-	int mouseZoom;
+	double scale; // current map scaling factor (controlled by zoomimg)
+	int mouseZoom;// mouse zoom (starts at 0, number of clicks of the scroll wheel)
 	const double scrollSpeed = 0.01;
 };
 

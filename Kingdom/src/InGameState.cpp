@@ -10,7 +10,7 @@
 
 #include "InGameState.h"
 #include "AppState.h"
-
+#include "Game.h"
 #include <string>
 #include <iostream>
 #include "SDL.h"
@@ -92,53 +92,53 @@ bool InGameState::render(SDL_Renderer* renderer, SDL_Window* window, double delt
 		tileY += scrollAmt;
 	}
 	//Render map
-	for(SDL_Event e : events) {
+	for(SDL_Event e : events) { //iterate through vector of events we received
 		if(e.type == SDL_MOUSEWHEEL) {
 			cout << "z: " << scale << endl;
 			mouseZoom += e.wheel.y;
-			scale = pow(2, (mouseZoom + 1) * 0.15);
+			scale = pow(2, (mouseZoom + 1) * 0.15); //scale the mouse for a nice linear zoom
+			scale = floor(scale * map->tileW) / map->tileW; //round scale to the nearest tile width multiple. prevents tile gaps.
+		} else if (e.type == SDL_MOUSEBUTTONDOWN) {
+			if(e.button.button == SDL_BUTTON_LEFT) {
+				int windowW;
+				int windowH;
+				SDL_GetWindowSize(window, &windowW, &windowH);
+				int clickX = (tileX * map->tileW * scale) - (windowW / 2) + e.button.x; //in pixels
+				int clickY = (tileY * map->tileH * scale) - (windowH / 2) + e.button.y;
+				int clickedTileX = clickX / (map->tileW * scale); //convert to tiles
+				int clickedTileY = clickY / (map->tileH * scale);
+
+				Unit* clickedUnit = map->unitAt(clickedTileX, clickedTileY);
+				selectedUnits.clear();
+				if (clickedUnit) {
+					selectedUnits.push_back(clickedUnit);
+				} else {
+					cout << "No clicky unit..." << endl;
+				}
+			} else if (e.button.button == SDL_BUTTON_RIGHT) {
+
+			}
 		}
 	}
-		map->draw(renderer, window, tileX, tileY, scale);
+		map->draw(renderer, window, tileX, tileY, scale, selectedUnits);
 	//Render UI
 	// Write text to surface
-	std::stringstream oss;
-
-	oss << "Turn: " << turnNumber << " (" << ceil((turnLength-timeSinceLastTurn)/1000) << ")";
-
-	//char* madeString =  oss.str();
-	/*char* topText = "Turn: ";
-	char integer_string[32];
-	sprintf(integer_string, "%d", turnNumber);
-	strcat(topText,)*/
-	//oss.str();
+	std::stringstream turnText;
+	turnText << "Turn: " << turnNumber << " (" << ceil((turnLength-timeSinceLastTurn)/1000) << ")";
 	SDL_Color text_color = {255, 255, 255};
-   textSurface = TTF_RenderText_Blended(font,
-		   oss.str().c_str(),
-   text_color);
-
-   if (textSurface == NULL)
-   {
-	  cerr << "TTF_RenderText_Solid() Failed: " << TTF_GetError() << endl;
-	  TTF_Quit();
-	  SDL_Quit();
-	  exit(1);
-   }
-	this->textTexture = SDL_CreateTextureFromSurface(renderer,textSurface);
 	int windowW;
 	int windowH;
 	SDL_GetWindowSize(window, &windowW, &windowH);
-	SDL_Rect destRect = {windowW-textSurface->w-10,10,textSurface->w,textSurface->h};
-	SDL_RenderCopy(renderer, this->textTexture, NULL, &destRect);
+	Game::renderText(turnText.str(),font, text_color, windowW - 120, 10, renderer);
 
-
+	cout.flush();
 	return true; //succesful render
 }
 InGameState::turnState InGameState::getTurnState(){
 	return this->currentTurnState;
 }
 void InGameState::nextTurn(){
-	cout << "Next Turn";
+	cout << "Next Turn" << endl;
 }
 InGameState::~InGameState() {
 	delete map;
