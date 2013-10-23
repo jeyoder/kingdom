@@ -10,6 +10,9 @@
 #include "Game.h"
 #include "InGameState.h"
 #include "FileMapGenerator.h"
+
+#include "SDL.h"
+#include "SDL_ttf.h"
 using namespace std;
 namespace kingdom {
 
@@ -43,7 +46,8 @@ void Game::run() {
 			}
 		}
 		keystates = SDL_GetKeyboardState(NULL);
-		if(keystates[SDL_SCANCODE_ESCAPE]) return;
+		if (keystates[SDL_SCANCODE_ESCAPE])
+			return;
 		SDL_RenderClear(renderer);
 		state->render(renderer, window, delta, keystates, events);
 		SDL_RenderPresent(renderer);
@@ -66,7 +70,18 @@ AppState& Game::getAppState() {
 	return *(state);
 }
 
+void Game::renderText(std::string text, TTF_Font* font, SDL_Color color, int x, int y, SDL_Renderer* renderer) {
+	SDL_Surface* textSurface = TTF_RenderText_Blended(font, text.c_str(), color);
 
-
+	if (textSurface == NULL) {
+		cerr << "TTF_RenderText_Solid() Failed: " << TTF_GetError() << endl;
+		TTF_Quit();
+		SDL_Quit();
+		exit(1);
+	}
+	SDL_Texture* textTexture = SDL_CreateTextureFromSurface(renderer, textSurface);
+	SDL_Rect dest = { x, y, textSurface->w, textSurface->h };
+	SDL_RenderCopy(renderer, textTexture, NULL, &dest);
+}
 
 } /* namespace kingdom */

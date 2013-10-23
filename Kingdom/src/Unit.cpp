@@ -13,8 +13,8 @@ namespace kingdom {
 Unit::Unit(int PlayerNumber, int TileX, int TileY) : Drawable(){
 	// TODO Auto-generated constructor stub
 	this->playerNum = PlayerNumber;
-	this->tileX = TileX;
-	this->tileY = TileY;
+	/*this->tileX = TileX;
+	this->tileY = TileY;*/
 	switch(this->playerNum){
 		case 0:
 			this->myImagePlayerSufix = "Green";

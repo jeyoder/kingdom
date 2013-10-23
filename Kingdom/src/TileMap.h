@@ -20,7 +20,7 @@ class TileMap {
 public:
 	TileMap(MapLoader* generator, SDL_Texture* tileset);
 	virtual ~TileMap();
-	void draw(SDL_Renderer* renderer, SDL_Window* window, double tileX, double tileY, double zoomLevel);
+	void draw(SDL_Renderer* renderer, SDL_Window* window, double tileX, double tileY, double zoomLevel, std::vector<Unit*>& selectedUnits);
 	int tileAt(int x, int y);
 	Unit* unitAt(int x, int y);
 	int getW();
@@ -37,7 +37,7 @@ private:
 	int mapW;
 	int mapH;
 	ResourceLoader* theLoader;
-
+	SDL_Texture* selectedTex;
 };
 }
 #endif /* TILEMAP_H_ */
