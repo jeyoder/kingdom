@@ -25,7 +25,7 @@ public:
 	void decrementTurns();
 	bool activated;
 	int getTurnsTillExecute;
-	WayPoint nextClosestTile(int myX, );
+	//WayPoint nextClosestTile(int myX, );
 };
 
 } /* namespace kingdom */

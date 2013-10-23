@@ -8,8 +8,10 @@
 #ifndef APP_H_
 #define APP_H_
 #include "SDL.h"
+#include "SDL_ttf.h"
 #include "ResourceLoader.h"
 #include "AppState.h"
+#include <string>
 namespace kingdom {
 
 class Game {
@@ -20,6 +22,8 @@ public:
 	AppState& getAppState();
 	void setAppState(AppState* state);
 	Uint8* getKeyStates();
+
+	static void renderText(std::string text, TTF_Font* font, SDL_Color color, int x, int y, SDL_Renderer* renderer);
 private:
 	SDL_Renderer* renderer;
 	SDL_Window* window;
