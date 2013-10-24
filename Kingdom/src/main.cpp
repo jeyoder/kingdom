@@ -10,6 +10,7 @@
 #include "SDL.h"
 #include "SDL_image.h"
 #include "SDL_ttf.h"
+#include "SDL_hints.h"
 #include "ResourceLoader.h"
 #include "AppState.h"
 #include "InGameState.h"
@@ -26,8 +27,9 @@ int main(int argc, char* argv[]) {
 	SDL_Init(SDL_INIT_EVERYTHING | SDL_INIT_NOPARACHUTE);
 	window = SDL_CreateWindow("Resource Loader", 100, 100, 1024, 768,
 			SDL_WINDOW_OPENGL);
+	SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "0");
 	SDL_Renderer* renderer = SDL_CreateRenderer(window, -1,
-			SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+			SDL_RENDERER_ACCELERATED | (SDL_RENDERER_PRESENTVSYNC));
 	cout << "SDL initialized" << endl;
 	// Initialize SDL_ttf library
 		   if (TTF_Init() != 0)

@@ -29,14 +29,17 @@ TileMap::TileMap(MapLoader* generator, SDL_Texture* tileset) {
 	mapUnits.push_back(new King(0,50, 50));
 	mapUnits.push_back(new King(0,50, 51));
 	mapUnits.push_back(new King(0,55,55));
+
+	//delete mapUnits[5];
 	selectedTex = ResourceLoader::getInstance()->loadTexture("assets/selected.png");
+	waypointTex = ResourceLoader::getInstance()->loadTexture("assets/target.png");
 }
 
 TileMap::~TileMap() {
 	// TODO Auto-generated destructor stub
 }
 
-void TileMap::draw(SDL_Renderer* renderer, SDL_Window* window, double tileX, double tileY, double zoomLevel, vector<Unit*>& selectedUnits) {
+void TileMap::draw(SDL_Renderer* renderer, SDL_Window* window, double tileX, double tileY, double zoomLevel, vector<Unit*>& selectedUnits, vector<WayPoint>& waypoints) {
 	int windowW;
 	int windowH;
 	SDL_GetWindowSize(window, &windowW, &windowH);
@@ -66,11 +69,18 @@ void TileMap::draw(SDL_Renderer* renderer, SDL_Window* window, double tileX, dou
 
 			SDL_RenderCopy(renderer, tileset, &srcRect, &destRect); //draw the tile
 
-			vector<Unit*>::iterator it;
-			for(it = selectedUnits.begin(); it != selectedUnits.end(); ++it) {
+
+			for(vector<Unit*>::iterator it = selectedUnits.begin(); it != selectedUnits.end(); ++it) {
 				Unit* unit = *it;
 				if(unit->tileX == x && unit->tileY == y) {
 					SDL_RenderCopy(renderer, selectedTex, NULL, &destRect);
+				}
+			}
+
+			for(vector<WayPoint>::iterator it = waypoints.begin(); it!=waypoints.end(); ++it) {
+				WayPoint wp = *it;
+				if(wp.getX() == x && wp.getY() == y) {
+					SDL_RenderCopy(renderer, waypointTex, NULL, &destRect);
 				}
 			}
 
