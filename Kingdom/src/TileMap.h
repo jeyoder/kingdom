@@ -36,7 +36,7 @@ private:
 
 	int mapW;
 	int mapH;
-	ResourceLoader* theLoader;
+
 	SDL_Texture* selectedTex;
 };
 }

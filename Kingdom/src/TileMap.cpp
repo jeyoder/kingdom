@@ -15,6 +15,7 @@
 #include <vector>
 #include "King.h"
 #include "ResourceLoader.h"
+#include <iterator>
 using namespace std;
 namespace kingdom {
 
