@@ -13,9 +13,8 @@
 #include "SDL.h"
 #include "AppState.h"
 #include "TileMap.h"
-#include "SDL.h"
 #include "SDL_ttf.h"
-
+#include "WayPoint.h"
 #include <sstream>
 using namespace std;
 namespace kingdom {
@@ -41,6 +40,7 @@ private:
 	double timeSinceLastTurn;
 	double turnLength;
 	std::vector<Unit*> selectedUnits;
+	std::vector<WayPoint> waypoints;
 	std::stringstream stringMaker;
 	TTF_Font *font;
 	double scale; // current map scaling factor (controlled by zoomimg)

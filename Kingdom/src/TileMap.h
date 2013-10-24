@@ -15,12 +15,13 @@
 #include "MapLoader.h"
 #include "Unit.h"
 #include "ResourceLoader.h"
+#include "WayPoint.h"
 namespace kingdom {
 class TileMap {
 public:
 	TileMap(MapLoader* generator, SDL_Texture* tileset);
 	virtual ~TileMap();
-	void draw(SDL_Renderer* renderer, SDL_Window* window, double tileX, double tileY, double zoomLevel, std::vector<Unit*>& selectedUnits);
+	void draw(SDL_Renderer* renderer, SDL_Window* window, double tileX, double tileY, double zoomLevel, std::vector<Unit*>& selectedUnits, std::vector<WayPoint>& waypoints);
 	int tileAt(int x, int y);
 	Unit* unitAt(int x, int y);
 	int getW();
@@ -36,6 +37,7 @@ private:
 	int mapW;
 	int mapH;
 	SDL_Texture* selectedTex;
+	SDL_Texture* waypointTex;
 };
 }
 #endif /* TILEMAP_H_ */

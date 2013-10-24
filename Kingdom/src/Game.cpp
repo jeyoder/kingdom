@@ -50,7 +50,7 @@ void Game::run() {
 			return;
 		SDL_RenderClear(renderer);
 		state->render(renderer, window, delta, keystates, events);
-		SDL_RenderPresent(renderer);
+		SDL_RenderPresent(renderer); //will vsync
 		frameCount++;
 		if (((double) (clock() - startTime)) / CLOCKS_PER_SEC > 1.0) {
 			cout << frameCount << " FPS d=" << delta << endl;

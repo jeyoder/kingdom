@@ -99,15 +99,14 @@ bool InGameState::render(SDL_Renderer* renderer, SDL_Window* window, double delt
 			scale = pow(2, (mouseZoom + 1) * 0.15); //scale the mouse for a nice linear zoom
 			scale = floor(scale * map->tileW) / map->tileW; //round scale to the nearest tile width multiple. prevents tile gaps.
 		} else if (e.type == SDL_MOUSEBUTTONDOWN) {
+			int windowW;
+			int windowH;
+			SDL_GetWindowSize(window, &windowW, &windowH);
+			int clickX = (tileX * map->tileW * scale) - (windowW / 2) + e.button.x; //tile location in pixels
+			int clickY = (tileY * map->tileH * scale) - (windowH / 2) + e.button.y;
+			int clickedTileX = clickX / (map->tileW * scale); //convert to tiles
+			int clickedTileY = clickY / (map->tileH * scale);
 			if(e.button.button == SDL_BUTTON_LEFT) {
-				int windowW;
-				int windowH;
-				SDL_GetWindowSize(window, &windowW, &windowH);
-				int clickX = (tileX * map->tileW * scale) - (windowW / 2) + e.button.x; //in pixels
-				int clickY = (tileY * map->tileH * scale) - (windowH / 2) + e.button.y;
-				int clickedTileX = clickX / (map->tileW * scale); //convert to tiles
-				int clickedTileY = clickY / (map->tileH * scale);
-
 				Unit* clickedUnit = map->unitAt(clickedTileX, clickedTileY);
 				selectedUnits.clear();
 				if (clickedUnit) {
@@ -116,11 +115,14 @@ bool InGameState::render(SDL_Renderer* renderer, SDL_Window* window, double delt
 					cout << "No clicky unit..." << endl;
 				}
 			} else if (e.button.button == SDL_BUTTON_RIGHT) {
-
+				waypoints.clear();
+				if(clickedTileX >= 0 && clickedTileX <= map->getW() && clickedTileY >= 0 && clickedTileY <= map->getH()) {
+					waypoints.push_back(WayPoint(clickedTileX, clickedTileY));
+				}
 			}
 		}
 	}
-		map->draw(renderer, window, tileX, tileY, scale, selectedUnits);
+		map->draw(renderer, window, tileX, tileY, scale, selectedUnits, waypoints);
 	//Render UI
 	// Write text to surface
 	std::stringstream turnText;
