@@ -23,6 +23,7 @@ Unit::Unit(int PlayerNumber, int TileX, int TileY) : Drawable(){
 			this->myImagePlayerSufix = "Red";
 			break;
 	}
+	this->currentUnitTurnState = Input;
 	orders = vector<Order*>();
 }
 void Unit::render(SDL_Renderer* Renderer,SDL_Window* Window){
@@ -32,16 +33,25 @@ void Unit::giveOrder(Order* theOrder){
 	this->orders.push_back(theOrder);
 }
 void Unit::nextUnitTurn(){
-	for(int i = 0; i < orders.size(); i++){
+	for(unsigned int i = 0; i < orders.size(); i++){
 		orders.at(i)->decrementTurns();
 	}
 	if(orders.at(0)->getTurnsTillExecute <= 0){
 		orders.at(0)->activated = true;
+		this->currentOrder = orders.at(0);
 	}
 
-	//this->unitTurnState = Animating;
+	this->currentUnitTurnState = Animating;
 }
+void Unit::moveAnimate(double delta){
+	if(this->currentUnitTurnState == Animating){
+		if(currentMoveingToPoint == NULL){
+			//this->currentMoveingToPoint = currentOrder->nextOrderClosestTile();
+		}
+		this->msAlreadyAnimated += delta;
 
+	}
+}
 Unit::~Unit() {
 	// TODO Auto-generated destructor stub
 }

@@ -27,8 +27,8 @@ public:
 	int getW();
 	int getH();
 	std::vector<short> mapData;
-	const int tileW = 64;
-	const int tileH = 64;
+	static const int tileW = 64;
+	static const int tileH = 64;
 	std::vector<Unit*> getUnitsList();
 private:
 	SDL_Texture* tileset;
