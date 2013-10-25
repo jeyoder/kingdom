@@ -35,9 +35,9 @@ private:
 	int TimePerTile = 1000; //How many miliseconds it takes to move one tile while animating
 	int tilesMovedAlready = 0;
 	int msAlreadyAnimated = 0;
-	unitTurnState currentUnitTurnState;
-	Order* currentOrder;
-	WayPoint* currentMoveingToPoint;
+	unitTurnState currentUnitTurnState = Input;
+	Order* currentOrder = NULL;
+	WayPoint currentMoveingToPoint = WayPoint(0,0);
 protected:
 	virtual void render(SDL_Renderer*, SDL_Window*);
 	std::string myImagePlayerSufix;

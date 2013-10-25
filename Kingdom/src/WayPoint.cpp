@@ -6,9 +6,9 @@
  */
 
 #include "WayPoint.h"
-
+#include <cmath>
 namespace kingdom {
-
+using namespace std;
 WayPoint::WayPoint(int X, int Y) {
 	// TODO Auto-generated constructor stub
 	this->x = X;
@@ -20,6 +20,22 @@ int WayPoint::getX(){
 int WayPoint::getY(){
 	return y;
 }
+WayPoint WayPoint::closestTile(int YourX, int YourY){
+	int xRealOff = this->x-YourX;
+	int yRealOff = this->y-YourY;
+	int xOff = 0;
+	int yOff = 0;
+	if(xRealOff > 0 || yRealOff >0){
+		if(abs(xRealOff) > abs(yRealOff)){
+			xOff = abs(xOff)/xOff; //will out put 1 or -1 depending on sign of reall offset
+		}
+		else{
+			yOff = abs(yOff)/yOff;
+		}
+	}
+	return WayPoint(this->x+xOff, this->y+yOff);
+}
+
 WayPoint::~WayPoint() {
 	// TODO Auto-generated destructor stub
 }

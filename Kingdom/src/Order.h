@@ -19,14 +19,16 @@ private:
 	Unit* toWho;
 	std::vector<WayPoint*> waypoints;
 	int turnsTillExecute;
+	int onWaypoint = 0;
+
 public:
 	Order(Unit* ToWho, std::vector<WayPoint*> Waypoints, int TurnsTillExecute);
 	virtual ~Order();
 	void decrementTurns();
 	bool activated;
 	int getTurnsTillExecute;
-	WayPoint* nextOrderClosestTile();
-
+	WayPoint nextOrderClosestTile();
+	bool completed = false;
 };
 
 } /* namespace kingdom */

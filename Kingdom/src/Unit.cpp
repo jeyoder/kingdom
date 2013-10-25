@@ -8,8 +8,11 @@
 #include "Unit.h"
 #include "ResourceLoader.h"
 #include "Order.h"
+#include "WayPoint.h"
+#include <cmath>
+#include "TileMap.h"
 namespace kingdom {
-
+using namespace std;
 Unit::Unit(int PlayerNumber, int TileX, int TileY) : Drawable(){
 	// TODO Auto-generated constructor stub
 	this->playerNum = PlayerNumber;
@@ -36,7 +39,7 @@ void Unit::nextUnitTurn(){
 	for(unsigned int i = 0; i < orders.size(); i++){
 		orders.at(i)->decrementTurns();
 	}
-	if(orders.at(0)->getTurnsTillExecute <= 0){
+	if(orders.size() > 0 &&  orders.at(0)->getTurnsTillExecute <= 0){
 		orders.at(0)->activated = true;
 		this->currentOrder = orders.at(0);
 	}
@@ -45,11 +48,19 @@ void Unit::nextUnitTurn(){
 }
 void Unit::moveAnimate(double delta){
 	if(this->currentUnitTurnState == Animating){
-		if(currentMoveingToPoint == NULL){
-			//this->currentMoveingToPoint = currentOrder->nextOrderClosestTile();
+		if(msAlreadyAnimated == 0){
+			this->currentMoveingToPoint = currentOrder->nextOrderClosestTile();
 		}
 		this->msAlreadyAnimated += delta;
-
+		int workingTime = msAlreadyAnimated;
+		if(this->msAlreadyAnimated > this->TimePerTile){
+			workingTime = TimePerTile;
+		}
+		int xFinalOff = abs(currentMoveingToPoint.getX()-this->tileX)/(currentMoveingToPoint.getX()-this->tileX)*TileMap::tileW;
+		int yFinalOff = abs(currentMoveingToPoint.getY()-this->tileY)/(currentMoveingToPoint.getY()-this->tileY)*TileMap::tileH;
+		double movedPercent = workingTime/TimePerTile;
+		this->offsetX = xFinalOff*movedPercent;
+		this->offsetY = yFinalOff*movedPercent;
 	}
 }
 Unit::~Unit() {

@@ -19,6 +19,9 @@ public:
 	virtual ~WayPoint();
 	int getX();
 	int getY();
+	WayPoint closestTile(int yourX, int yourY);
+	/*int xDir(int yourX);
+	int yDir(int yourY);*/
 };
 
 } /* namespace kingdom */
