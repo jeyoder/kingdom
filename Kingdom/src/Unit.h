@@ -28,6 +28,7 @@ public:
 	virtual void nextUnitTurn();
 	void moveAnimate(double delta);
 	int offsetX,offsetY;
+	unitTurnState getUnitTurnState();
 private:
 	int playerNum;
 	vector<Order*> orders;

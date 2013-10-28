@@ -48,23 +48,45 @@ void Unit::nextUnitTurn(){
 }
 void Unit::moveAnimate(double delta){
 	if(this->currentUnitTurnState == Animating){
-		if(msAlreadyAnimated == 0){
-			this->currentMoveingToPoint = currentOrder->nextOrderClosestTile();
+		//if(msAlreadyAnimated == -1){
+			//If this is the first time this turn
+		this->currentMoveingToPoint = currentOrder->nextOrderClosestTile();
+			//msAlreadyAnimated = 0;
+		//}
+		if(!currentOrder->completed){
+			this->msAlreadyAnimated += delta;
+			int workingTime = msAlreadyAnimated;
+			if(this->msAlreadyAnimated > this->TimePerTile){
+				workingTime = TimePerTile;
+			}
+			int xFinalOff = abs(currentMoveingToPoint.getX()-this->tileX)/(currentMoveingToPoint.getX()-this->tileX)*TileMap::tileW;
+			int yFinalOff = abs(currentMoveingToPoint.getY()-this->tileY)/(currentMoveingToPoint.getY()-this->tileY)*TileMap::tileH;
+			double movedPercent = workingTime/TimePerTile;
+			this->offsetX = xFinalOff*movedPercent;
+			this->offsetY = yFinalOff*movedPercent;
+
+			if(msAlreadyAnimated > this->TimePerTile){
+				//Done for this time
+				this->tileX = currentMoveingToPoint.getX();
+				this->tileY = currentMoveingToPoint.getY();
+				msAlreadyAnimated = msAlreadyAnimated-TimePerTile;
+			}
 		}
-		this->msAlreadyAnimated += delta;
-		int workingTime = msAlreadyAnimated;
-		if(this->msAlreadyAnimated > this->TimePerTile){
-			workingTime = TimePerTile;
+		else{
+			//ok current order is done. Let's call go back to input
+			msAlreadyAnimated = 0;
+			this->currentUnitTurnState = Input;
 		}
-		int xFinalOff = abs(currentMoveingToPoint.getX()-this->tileX)/(currentMoveingToPoint.getX()-this->tileX)*TileMap::tileW;
-		int yFinalOff = abs(currentMoveingToPoint.getY()-this->tileY)/(currentMoveingToPoint.getY()-this->tileY)*TileMap::tileH;
-		double movedPercent = workingTime/TimePerTile;
-		this->offsetX = xFinalOff*movedPercent;
-		this->offsetY = yFinalOff*movedPercent;
 	}
+}
+unitTurnState Unit::getUnitTurnState(){
+	return currentUnitTurnState;
 }
 Unit::~Unit() {
 	// TODO Auto-generated destructor stub
+	for(unsigned int i = 0; i < orders.size(); i++){
+		delete orders.at(i);
+	}
 }
 
 } /* namespace kingdom */

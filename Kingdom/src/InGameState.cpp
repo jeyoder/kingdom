@@ -73,11 +73,32 @@ InGameState::InGameState(MapLoader* loader, std::string tileset) {
 
 bool InGameState::render(SDL_Renderer* renderer, SDL_Window* window, double delta, const Uint8* keystates, vector<SDL_Event> &events){
 	//Game Logic
-	timeSinceLastTurn += delta;
-	if(timeSinceLastTurn >= turnLength){
-		nextTurn();
-		timeSinceLastTurn = timeSinceLastTurn - turnLength;
+	switch (currentTurnState){
+		case Input:
+			timeSinceLastTurn += delta;
+			if(timeSinceLastTurn >= turnLength){
+				nextTurn();
+				timeSinceLastTurn = timeSinceLastTurn - turnLength;
+			}
+			break;
+		case Animating:
+			bool StillAnimating = false;
+			std::vector<Unit*> unitList = this->map->getUnitsList();
+			for(int i = 0; i < unitList.size(); i++){
+				if(unitList.at(i)->currentUnitTurnState == Unit::Animating){
+					StillAnimating = true; //if someone is still animating we have to stay in the animating state
+					unitList.at(i)->moveAnimate(delta);
+				}
+			}
+			if(!StillAnimating){
+				this->currentTurnState = Input;
+			}
+			break;
 	}
+
+
+	//
+
 	double scrollAmt = delta * scrollSpeed;
 	if(keystates[SDL_SCANCODE_A]) {
 		tileX -= scrollAmt;
@@ -122,11 +143,16 @@ bool InGameState::render(SDL_Renderer* renderer, SDL_Window* window, double delt
 			}
 		}
 	}
-		map->draw(renderer, window, tileX, tileY, scale, selectedUnits, waypoints);
+	map->draw(renderer, window, tileX, tileY, scale, selectedUnits, waypoints);
 	//Render UI
 	// Write text to surface
 	std::stringstream turnText;
-	turnText << "Turn: " << turnNumber << " (" << ceil((turnLength-timeSinceLastTurn)/1000) << ")";
+	if(this->currentTurnState == Input){
+		turnText << "Turn: " << turnNumber << " (" << ceil((turnLength-timeSinceLastTurn)/1000) << ")";
+	}
+	else{
+		turnText << "Taking Turn...";
+	}
 	SDL_Color text_color = {255, 255, 255};
 	int windowW;
 	int windowH;
