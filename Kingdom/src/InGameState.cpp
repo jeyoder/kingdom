@@ -85,7 +85,7 @@ bool InGameState::render(SDL_Renderer* renderer, SDL_Window* window, double delt
 			bool StillAnimating = false;
 			std::vector<Unit*> unitList = this->map->getUnitsList();
 			for(int i = 0; i < unitList.size(); i++){
-				if(unitList.at(i)->currentUnitTurnState == Unit::Animating){
+				if(unitList.at(i)->getUnitTurnState() == Unit::Animating){
 					StillAnimating = true; //if someone is still animating we have to stay in the animating state
 					unitList.at(i)->moveAnimate(delta);
 				}
