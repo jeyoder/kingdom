@@ -39,6 +39,7 @@ private:
 	unitTurnState currentUnitTurnState = Input;
 	Order* currentOrder = NULL;
 	WayPoint currentMoveingToPoint = WayPoint(0,0);
+
 protected:
 	virtual void render(SDL_Renderer*, SDL_Window*);
 	std::string myImagePlayerSufix;

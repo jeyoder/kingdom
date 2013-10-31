@@ -6,7 +6,7 @@
  */
 
 #include "Order.h"
-
+#include <iostream>
 namespace kingdom {
 
 Order::Order(Unit *ToWho, std::vector<WayPoint*> Waypoints, int TurnsTillExecute) {
@@ -18,11 +18,13 @@ Order::Order(Unit *ToWho, std::vector<WayPoint*> Waypoints, int TurnsTillExecute
 }
 void Order::decrementTurns(){
 	turnsTillExecute--;
+	std::cout << "order decrementing. now have " << turnsTillExecute << "turns \n";
+	std::cout.flush();
 }
 WayPoint Order::nextOrderClosestTile(){
 	if(this->toWho->tileX == waypoints.at(onWaypoint)->getX() && this->toWho->tileY == waypoints.at(onWaypoint)->getY()){
 		//Already reached current waypoint
-		if(onWaypoint < waypoints.size()){
+		if(onWaypoint < waypoints.size() - 1){
 			onWaypoint++;
 		}
 		else{

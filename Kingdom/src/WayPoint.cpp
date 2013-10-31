@@ -7,6 +7,7 @@
 
 #include "WayPoint.h"
 #include <cmath>
+#include <iostream>
 namespace kingdom {
 using namespace std;
 WayPoint::WayPoint(int X, int Y) {
@@ -25,15 +26,17 @@ WayPoint WayPoint::closestTile(int YourX, int YourY){
 	int yRealOff = this->y-YourY;
 	int xOff = 0;
 	int yOff = 0;
-	if(xRealOff > 0 || yRealOff >0){
+	if(xRealOff > 0 || yRealOff > 0){
 		if(abs(xRealOff) > abs(yRealOff)){
-			xOff = abs(xOff)/xOff; //will out put 1 or -1 depending on sign of reall offset
+			xOff = (xRealOff != 0) ? abs(xRealOff)/xRealOff : 0; //will out put 1 or -1 depending on sign of reall offset
 		}
 		else{
-			yOff = abs(yOff)/yOff;
+			yOff = (yRealOff != 0) ? abs(yRealOff)/yRealOff : 0;
 		}
 	}
-	return WayPoint(this->x+xOff, this->y+yOff);
+	cout << "waypoint Off " << xOff << ", " << yOff << "real off " << xRealOff << ", " << yRealOff;
+	cout.flush();
+	return WayPoint(YourX+xOff, YourY+yOff);
 }
 
 WayPoint::~WayPoint() {
