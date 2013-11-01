@@ -30,13 +30,13 @@ TileMap::TileMap(MapLoader* generator, SDL_Texture* tileset) {
 	/*mapUnits.push_back(new King(0,50, 51));
 	mapUnits.push_back(new King(0,55,55));*/
 	vector<WayPoint*> orderWays = vector<WayPoint*>();
-	orderWays.push_back(new WayPoint(56,50));
+	//orderWays.push_back(new WayPoint(56,50));
 	//orderWays.push_back(new WayPoint(56,53));
-	mapUnits.at(0)->giveOrder(new Order(mapUnits.at(0),orderWays,1));
-	orderWays = vector<WayPoint*>();
-	orderWays.push_back(new WayPoint(51,51));
+	//mapUnits.at(0)->giveOrder(new Order(mapUnits.at(0),orderWays,1));
+	//orderWays = vector<WayPoint*>();
+	//orderWays.push_back(new WayPoint(51,51));
 	///orderWays.push_back(new WayPoint(56,53));
-	mapUnits.at(0)->giveOrder(new Order(mapUnits.at(0),orderWays,4));
+	//mapUnits.at(0)->giveOrder(new Order(mapUnits.at(0),orderWays,4));
 	//delete mapUnits[5];
 	selectedTex = ResourceLoader::getInstance()->loadTexture("assets/selected.png");
 	waypointTex = ResourceLoader::getInstance()->loadTexture("assets/target.png");
