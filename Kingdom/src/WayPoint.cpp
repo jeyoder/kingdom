@@ -26,7 +26,7 @@ WayPoint WayPoint::closestTile(int YourX, int YourY){
 	int yRealOff = this->y-YourY;
 	int xOff = 0;
 	int yOff = 0;
-	if(xRealOff > 0 || yRealOff > 0){
+	if(abs(xRealOff) > 0 || abs(yRealOff) > 0){
 		if(abs(xRealOff) > abs(yRealOff)){
 			xOff = (xRealOff != 0) ? abs(xRealOff)/xRealOff : 0; //will out put 1 or -1 depending on sign of reall offset
 		}

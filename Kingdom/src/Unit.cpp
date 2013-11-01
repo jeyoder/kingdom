@@ -42,17 +42,39 @@ void Unit::giveOrder(Order* theOrder){
 void Unit::nextUnitTurn(){
 	std::cout << "Hey I'm a Unit at " << tileX << tileY << "taking my turn \n";
 	cout.flush();
-	for(unsigned int i = 0; i < orders.size(); i++){
-		orders.at(i)->decrementTurns();
-	}
-	if(orders.size() > 0 &&  orders.at(0)->getTurnsTillExecute <= 0){
-		orders.at(0)->activated = true;
-		this->currentOrder = orders.at(0);
-		std::cout << "assigning current order " << currentOrder->completed << "\n";
-		std::cout.flush();
-	}
+	if(orders.size() > 0){
+		for(unsigned int i = 0; i < orders.size(); i++){
+			orders.at(i)->decrementTurns();
+		}
+		for(int i = orders.size() - 1; i >= 0; i--){
+			//loop through and look for most recent order that is is ready
+			if(orders.at(i)->getTurnsTillExecute() <= 0){
+				orders.at(i)->activated = true;
+				this->currentOrder = orders.at(i);
+				std::cout << "assigning current order number " << i << "\n";
+				std::cout.flush();
+				this->currentUnitTurnState = Animating;
 
-	this->currentUnitTurnState = Animating;
+				//delete everything before it
+				for(int ii = 0; ii < i; ii++){
+					std::cout << "deleting ii " << ii << "\n";
+					std::cout.flush();
+					delete orders.at(ii);
+					orders.erase(orders.begin() + ii);
+				}
+
+				break;
+			}
+		}
+
+		if(orders.at(0)->getTurnsTillExecute() <= 0){
+			orders.at(0)->activated = true;
+			this->currentOrder = orders.at(0);
+			std::cout << "assigning current order " << currentOrder->completed << "\n";
+			std::cout.flush();
+			this->currentUnitTurnState = Animating;
+		}
+	}
 }
 void Unit::moveAnimate(double delta){
 	if(this->currentUnitTurnState == Animating){
@@ -63,7 +85,7 @@ void Unit::moveAnimate(double delta){
 		//}
 		std::cout << "----- \n next closest tile " << currentMoveingToPoint.getX() << ", " << currentMoveingToPoint.getY() << "\n";
 		std::cout.flush();
-		if(!currentOrder->completed && tilesMovedAlready < TilesPerTurn){
+		if(currentOrder != NULL && !currentOrder->completed && tilesMovedAlready < TilesPerTurn){
 			this->msAlreadyAnimated += delta;
 			double workingTime = msAlreadyAnimated;
 			if(this->msAlreadyAnimated > this->TimePerTile){
@@ -97,6 +119,16 @@ void Unit::moveAnimate(double delta){
 			if(tilesMovedAlready >= TilesPerTurn){
 				tilesMovedAlready = 0;
 				this->currentUnitTurnState = Input;
+			}
+			if(currentOrder->completed){
+				for(int i = 0; i < orders.size(); i++){
+					if(orders.at(i) == currentOrder){
+						orders.erase(orders.begin()+i);
+					}
+				}
+				delete currentOrder;
+				currentOrder == NULL;
+				std::cout << "made5 and size is now " <<orders.size();
 			}
 		}
 	}

@@ -21,6 +21,9 @@ void Order::decrementTurns(){
 	std::cout << "order decrementing. now have " << turnsTillExecute << "turns \n";
 	std::cout.flush();
 }
+int Order::getTurnsTillExecute(){
+	return turnsTillExecute;
+}
 WayPoint Order::nextOrderClosestTile(){
 	if(this->toWho->tileX == waypoints.at(onWaypoint)->getX() && this->toWho->tileY == waypoints.at(onWaypoint)->getY()){
 		//Already reached current waypoint
@@ -34,6 +37,7 @@ WayPoint Order::nextOrderClosestTile(){
 	}
 	return waypoints.at(onWaypoint)->closestTile(toWho->tileX,toWho->tileY);
 }
+
 Order::~Order() {
 	// TODO Auto-generated destructor stub
 }

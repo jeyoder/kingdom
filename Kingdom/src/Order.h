@@ -25,7 +25,7 @@ public:
 	virtual ~Order();
 	void decrementTurns();
 	bool activated;
-	int getTurnsTillExecute;
+	int getTurnsTillExecute();
 	WayPoint nextOrderClosestTile();
 	bool completed = false;
 };

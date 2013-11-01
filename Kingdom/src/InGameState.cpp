@@ -166,6 +166,7 @@ InGameState::turnState InGameState::getTurnState(){
 	return this->currentTurnState;
 }
 void InGameState::nextTurn(){
+	turnNumber++;
 	this->currentTurnState = Processing;
 	cout << "Next Turn";
 	//Tell all the units to take their turn
