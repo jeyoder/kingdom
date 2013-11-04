@@ -34,8 +34,8 @@ WayPoint WayPoint::closestTile(int YourX, int YourY){
 			yOff = (yRealOff != 0) ? abs(yRealOff)/yRealOff : 0;
 		}
 	}
-	cout << "waypoint Off " << xOff << ", " << yOff << "real off " << xRealOff << ", " << yRealOff;
-	cout.flush();
+	//cout << "waypoint Off " << xOff << ", " << yOff << "real off " << xRealOff << ", " << yRealOff;
+	//cout.flush();
 	return WayPoint(YourX+xOff, YourY+yOff);
 }
 

@@ -83,7 +83,7 @@ void Unit::moveAnimate(double delta){
 		this->currentMoveingToPoint = currentOrder->nextOrderClosestTile();
 			//msAlreadyAnimated = 0;
 		//}
-		std::cout << "----- \n next closest tile " << currentMoveingToPoint.getX() << ", " << currentMoveingToPoint.getY() << "\n";
+		//std::cout << "----- \n next closest tile " << currentMoveingToPoint.getX() << ", " << currentMoveingToPoint.getY() << " tiles already movied " << tilesMovedAlready <<"\n";
 		std::cout.flush();
 		if(currentOrder != NULL && !currentOrder->completed && tilesMovedAlready < TilesPerTurn){
 			this->msAlreadyAnimated += delta;
@@ -99,24 +99,27 @@ void Unit::moveAnimate(double delta){
 			double movedPercent = workingTime/TimePerTile;
 			this->offsetX = xFinalOff*movedPercent;
 			this->offsetY = yFinalOff*movedPercent;
-			//std::cout << "offset " <<offsetX << ", " << offsetY <<  " movedPercent " << movedPercent << " wt " << workingTime << " FinalOff " << xFinalOff << ", " << yFinalOff;
+			//std::cout << "offset " <<offsetX << ", " << offsetY <<  " movedPercent " << movedPercent << " wt " << workingTime << " FinalOff " << xFinalOff << ", " << yFinalOff << "\n";
 			std::cout.flush();
 			if(msAlreadyAnimated > this->TimePerTile){
+
 				//Done for this time
 				this->tileX = currentMoveingToPoint.getX();
 				this->tileY = currentMoveingToPoint.getY();
 				this->offsetX = 0;
 				this->offsetY = 0;
 				tilesMovedAlready++;
+				std::cout << "increment " << tilesMovedAlready << " \n";
+				std::cout.flush();
 				msAlreadyAnimated = msAlreadyAnimated-TimePerTile;
 			}
 		}
 		else{
 			//ok current order is done. Let's call go back to input
 			msAlreadyAnimated = 0;
-			tilesMovedAlready = 0;
-			tilesMovedAlready++;
-			if(tilesMovedAlready >= TilesPerTurn){
+			//tilesMovedAlready = 0;
+			//tilesMovedAlready++;
+			if(tilesMovedAlready >= TilesPerTurn || currentOrder->completed){
 				tilesMovedAlready = 0;
 				this->currentUnitTurnState = Input;
 			}

@@ -136,13 +136,15 @@ bool InGameState::render(SDL_Renderer* renderer, SDL_Window* window, double delt
 					cout << "No clicky unit..." << endl;
 				}
 			} else if (e.button.button == SDL_BUTTON_RIGHT) {
-				if(selectedUnits.size() > 0){
-					waypoints.clear();
-					if(clickedTileX >= 0 && clickedTileX <= map->getW() && clickedTileY >= 0 && clickedTileY <= map->getH()) {
-						waypoints.push_back(WayPoint(clickedTileX, clickedTileY));
-						vector<WayPoint*> orderPoints;
-						orderPoints.push_back(new WayPoint(clickedTileX,clickedTileY));
-						selectedUnits.at(0)->giveOrder(new Order(selectedUnits.at(0),orderPoints,1));
+				if(currentTurnState == Input){
+					if(selectedUnits.size() > 0){
+						waypoints.clear();
+						if(clickedTileX >= 0 && clickedTileX <= map->getW() && clickedTileY >= 0 && clickedTileY <= map->getH()) {
+							waypoints.push_back(WayPoint(clickedTileX, clickedTileY));
+							vector<WayPoint*> orderPoints;
+							orderPoints.push_back(new WayPoint(clickedTileX,clickedTileY));
+							selectedUnits.at(0)->giveOrder(new Order(selectedUnits.at(0),orderPoints,1));
+						}
 					}
 				}
 			}

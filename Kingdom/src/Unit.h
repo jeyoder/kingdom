@@ -32,11 +32,6 @@ public:
 private:
 	int playerNum;
 	vector<Order*> orders;
-	int TilesPerTurn = 1; //Would likely be called something like "Movement Speed" in game UI
-	int TimePerTile = 1000; //How many miliseconds it takes to move one tile while animating
-	int tilesMovedAlready = 0;
-	int msAlreadyAnimated = 0;
-	unitTurnState currentUnitTurnState = Input;
 	Order* currentOrder = NULL;
 	WayPoint currentMoveingToPoint = WayPoint(0,0);
 
@@ -44,7 +39,11 @@ protected:
 	virtual void render(SDL_Renderer*, SDL_Window*);
 	std::string myImagePlayerSufix;
 	std::string myImagePlayerPrefix;
-
+	int TilesPerTurn = 1; //Would likely be called something like "Movement Speed" in game UI
+	int TimePerTile = 1000; //How many miliseconds it takes to move one tile while animating
+	int tilesMovedAlready = 0;
+	int msAlreadyAnimated = 0;
+	unitTurnState currentUnitTurnState = Input;
 };
 
 } /* namespace kingdom */
