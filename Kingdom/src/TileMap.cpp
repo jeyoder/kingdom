@@ -16,6 +16,7 @@
 #include "King.h"
 #include "ResourceLoader.h"
 #include <iterator>
+#include "Pawn.h"
 using namespace std;
 namespace kingdom {
 
@@ -27,6 +28,8 @@ TileMap::TileMap(MapLoader* generator, SDL_Texture* tileset) {
 	//mapUnits = std::vector<std::vector<Unit> > (this->mapW); //create a 2d vector containing units
 	mapUnits = std::vector<Unit*> (); //create a vector containing pointers to our units
 	mapUnits.push_back(new King(0,50, 50));
+	mapUnits.push_back(new Pawn(0,51, 49));
+	mapUnits.push_back(new Pawn(0,49, 49));
 	/*mapUnits.push_back(new King(0,50, 51));
 	mapUnits.push_back(new King(0,55,55));*/
 	vector<WayPoint*> orderWays = vector<WayPoint*>();
