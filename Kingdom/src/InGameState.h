@@ -15,6 +15,7 @@
 #include "TileMap.h"
 #include "SDL_ttf.h"
 #include "WayPoint.h"
+#include "Order.h"
 #include <sstream>
 using namespace std;
 namespace kingdom {
@@ -40,7 +41,11 @@ private:
 	double timeSinceLastTurn;
 	double turnLength;
 	std::vector<Unit*> selectedUnits;
-	std::vector<WayPoint> waypoints;
+
+	bool inOrderMode = false;
+	Order tempOrder;
+	std::vector<WayPoint> tempOrderPath;
+
 	std::stringstream stringMaker;
 	TTF_Font *font;
 	double scale; // current map scaling factor (controlled by zoomimg)

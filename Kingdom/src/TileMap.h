@@ -21,11 +21,12 @@ class TileMap {
 public:
 	TileMap(MapLoader* generator, SDL_Texture* tileset);
 	virtual ~TileMap();
-	void draw(SDL_Renderer* renderer, SDL_Window* window, double tileX, double tileY, double zoomLevel, std::vector<Unit*>& selectedUnits, std::vector<WayPoint>& waypoints);
+	void draw(SDL_Renderer* renderer, SDL_Window* window, double tileX, double tileY, double zoomLevel, std::vector<Unit*>& selectedUnits, std::vector<WayPoint>& waypoints, std::vector<WayPoint>& path);
 	int tileAt(int x, int y);
 	Unit* unitAt(int x, int y);
 	int getW();
 	int getH();
+	bool isTilePassable(int x, int y);
 	std::vector<short> mapData;
 	const int tileW = 64;
 	const int tileH = 64;
@@ -38,6 +39,8 @@ private:
 	int mapH;
 	SDL_Texture* selectedTex;
 	SDL_Texture* waypointTex;
+	SDL_Texture* waypointChooserTex;
+	SDL_Texture* pathfindingTex;
 };
 }
 #endif /* TILEMAP_H_ */

@@ -103,7 +103,7 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/SDL/SDL2-2.0.0/i686-w64-mingw32/include/SDL2}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/SDL/SDL2_image-2.0.0/i686-w64-mingw32/include/SDL2}&quot;"/>
 								</option>
-								<option id="gnu.cpp.compiler.option.other.other.1772190616" superClass="gnu.cpp.compiler.option.other.other" value="-c -fmessage-length=0 -std=c++11" valueType="string"/>
+								<option id="gnu.cpp.compiler.option.other.other.1772190616" name="Other flags" superClass="gnu.cpp.compiler.option.other.other" value="-c -fmessage-length=0 -std=c++11" valueType="string"/>
 								<inputType id="cdt.managedbuild.tool.gnu.cpp.compiler.input.770610454" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.input"/>
 							</tool>
 							<tool id="cdt.managedbuild.tool.gnu.c.compiler.mingw.exe.release.1515513139" name="GCC C Compiler" superClass="cdt.managedbuild.tool.gnu.c.compiler.mingw.exe.release">

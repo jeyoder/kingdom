@@ -20,9 +20,13 @@
 using namespace std;
 using namespace kingdom;
 SDL_Window* window;
+void myTerminate() {
+	cout.flush();
+	abort();
+}
 int main(int argc, char* argv[]) {
 	cout << "hello world";
-
+	std::set_terminate(myTerminate);
 	//Start SDL
 	SDL_Init(SDL_INIT_EVERYTHING | SDL_INIT_NOPARACHUTE);
 	window = SDL_CreateWindow("Resource Loader", 100, 100, 1024, 768,

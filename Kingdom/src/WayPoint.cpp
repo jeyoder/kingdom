@@ -14,14 +14,25 @@ WayPoint::WayPoint(int X, int Y) {
 	this->x = X;
 	this->y = Y;
 }
-int WayPoint::getX(){
+int WayPoint::getX() const{
 	return x;
 }
-int WayPoint::getY(){
+int WayPoint::getY() const{
 	return y;
 }
 WayPoint::~WayPoint() {
 	// TODO Auto-generated destructor stub
 }
+
+const bool WayPoint::operator== (const WayPoint& comp) {
+	return (x == comp.getX() && y == comp.getY());
+}
+
+const bool WayPoint::operator!= (const WayPoint& comp) {
+	WayPoint compare = comp;
+	return !(compare == (*this));
+}
+
+
 
 } /* namespace kingdom */

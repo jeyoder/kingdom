@@ -11,16 +11,22 @@
 #include <vector>
 #include "Unit.h"
 #include "WayPoint.h"
+#include "TileMap.h"
 namespace kingdom {
 using namespace std;
 class Order {
 private:
 	Unit* toWho;
-	std::vector<WayPoint*> waypoints;
+	TileMap* map;
+	std::vector<WayPoint> waypoints;
 	int turnsTillExecute;
+	std::vector<WayPoint> aStar(WayPoint from, WayPoint to);
 public:
-	Order(Unit *ToWho, std::vector<WayPoint*> Waypoints, int TurnsTillExecute);
+	Order(Unit *ToWho, std::vector<WayPoint> Waypoints, int TurnsTillExecute, TileMap* map);
+	Order();
 	virtual ~Order();
+	std::vector<WayPoint> getPath();
+	std::vector<WayPoint> getWayPoints();
 };
 
 } /* namespace kingdom */

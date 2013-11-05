@@ -17,9 +17,12 @@ private:
 public:
 	WayPoint(int X, int Y);
 	virtual ~WayPoint();
-	int getX();
-	int getY();
+	int getX() const;
+	int getY() const;
+	const bool operator== (const WayPoint& comp);
+	const bool operator!= (const WayPoint& comp);
 };
+
 
 } /* namespace kingdom */
 #endif /* WAYPOINT_H_ */

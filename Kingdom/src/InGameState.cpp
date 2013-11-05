@@ -11,6 +11,7 @@
 #include "InGameState.h"
 #include "AppState.h"
 #include "Game.h"
+#include "Order.h"
 #include <string>
 #include <iostream>
 #include "SDL.h"
@@ -98,31 +99,61 @@ bool InGameState::render(SDL_Renderer* renderer, SDL_Window* window, double delt
 			mouseZoom += e.wheel.y;
 			scale = pow(2, (mouseZoom + 1) * 0.15); //scale the mouse for a nice linear zoom
 			scale = floor(scale * map->tileW) / map->tileW; //round scale to the nearest tile width multiple. prevents tile gaps.
-		} else if (e.type == SDL_MOUSEBUTTONDOWN) {
+		} else if (e.type == SDL_MOUSEBUTTONDOWN || e.type == SDL_MOUSEBUTTONUP || e.type == SDL_MOUSEMOTION) {
 			int windowW;
 			int windowH;
+			int mouseX, mouseY;
+			unsigned int mouseButtons;
 			SDL_GetWindowSize(window, &windowW, &windowH);
-			int clickX = (tileX * map->tileW * scale) - (windowW / 2) + e.button.x; //tile location in pixels
-			int clickY = (tileY * map->tileH * scale) - (windowH / 2) + e.button.y;
+			mouseButtons = SDL_GetMouseState(&mouseX, &mouseY);
+			int clickX = (tileX * map->tileW * scale) - (windowW / 2) + mouseX; //tile location in pixels
+			int clickY = (tileY * map->tileH * scale) - (windowH / 2) + mouseY;
 			int clickedTileX = clickX / (map->tileW * scale); //convert to tiles
 			int clickedTileY = clickY / (map->tileH * scale);
-			if(e.button.button == SDL_BUTTON_LEFT) {
+			if(e.button.button == SDL_BUTTON_LEFT && e.type == SDL_MOUSEBUTTONUP) { //on lmb release
 				Unit* clickedUnit = map->unitAt(clickedTileX, clickedTileY);
 				selectedUnits.clear();
+				inOrderMode = false;
 				if (clickedUnit) {
 					selectedUnits.push_back(clickedUnit);
 				} else {
 					cout << "No clicky unit..." << endl;
 				}
-			} else if (e.button.button == SDL_BUTTON_RIGHT) {
-				waypoints.clear();
-				if(clickedTileX >= 0 && clickedTileX <= map->getW() && clickedTileY >= 0 && clickedTileY <= map->getH()) {
-					waypoints.push_back(WayPoint(clickedTileX, clickedTileY));
+			} else if (e.button.button == SDL_BUTTON_RIGHT && selectedUnits.size() > 0 && e.type == SDL_MOUSEBUTTONDOWN) { //right click start, start an order, show the waypoint chooser
+				if(clickedTileX >= 0 && clickedTileX <= map->getW() && clickedTileY >= 0 && clickedTileY <= map->getH()) { //if the click was actually on the map
+					inOrderMode = true;
+					vector<WayPoint> orderPoints = {WayPoint(clickedTileX, clickedTileY)};
+					tempOrder = Order(selectedUnits.at(0), orderPoints, 0, map);
+					tempOrderPath = tempOrder.getPath();
+				}
+			} else if (e.button.button == SDL_BUTTON_RIGHT && selectedUnits.size() > 0 && e.type == SDL_MOUSEBUTTONUP) { //right click end, dispatch the order and clear the waypoint chooser
+				inOrderMode = false;
+				if(clickedTileX >= 0 && clickedTileX <= map->getW() && clickedTileY >= 0 && clickedTileY <= map->getH()) { //if click is inside tha map
+					vector<WayPoint> orderPoints = {WayPoint(clickedTileX, clickedTileY)};
+					tempOrder = Order(selectedUnits.at(0), orderPoints, 0, map);
+					tempOrderPath = tempOrder.getPath();
+				}
+				cout << "Dispatch Order" << endl;
+
+			} else if (e.type == SDL_MOUSEMOTION) { //on mouse move
+				if((mouseButtons & SDL_BUTTON_RMASK) && inOrderMode) { //if the  rmb is down and a unit is receiving orders
+					vector<WayPoint> orderPoints = {WayPoint(clickedTileX, clickedTileY)};
+					tempOrder = Order(selectedUnits.at(0), orderPoints, 0, map);
+					tempOrderPath = tempOrder.getPath();
 				}
 			}
 		}
 	}
-		map->draw(renderer, window, tileX, tileY, scale, selectedUnits, waypoints);
+	cout << inOrderMode << endl;
+	if(inOrderMode) {
+		vector<WayPoint> orderPoints = tempOrder.getWayPoints();
+		map->draw(renderer, window, tileX, tileY, scale, selectedUnits, orderPoints, tempOrderPath);
+
+	} else {
+		vector<WayPoint> empty;
+		map->draw(renderer, window, tileX, tileY, scale, selectedUnits, empty, empty);
+	}
+
 	//Render UI
 	// Write text to surface
 	std::stringstream turnText;

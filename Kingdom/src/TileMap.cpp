@@ -31,13 +31,15 @@ TileMap::TileMap(MapLoader* generator, SDL_Texture* tileset) {
 	//delete mapUnits[5];
 	selectedTex = ResourceLoader::getInstance()->loadTexture("assets/selected.png");
 	waypointTex = ResourceLoader::getInstance()->loadTexture("assets/target.png");
+	waypointChooserTex = ResourceLoader::getInstance()->loadTexture("assets/target_chooser.png");
+	pathfindingTex = ResourceLoader::getInstance()->loadTexture("assets/pathfinding-dot.png");
 }
 
 TileMap::~TileMap() {
 	// TODO Auto-generated destructor stub
 }
 
-void TileMap::draw(SDL_Renderer* renderer, SDL_Window* window, double tileX, double tileY, double zoomLevel, vector<Unit*>& selectedUnits, vector<WayPoint>& waypoints) {
+void TileMap::draw(SDL_Renderer* renderer, SDL_Window* window, double tileX, double tileY, double zoomLevel, vector<Unit*>& selectedUnits, vector<WayPoint>& waypoints, vector<WayPoint>& path) {
 	int windowW;
 	int windowH;
 	SDL_GetWindowSize(window, &windowW, &windowH);
@@ -78,9 +80,15 @@ void TileMap::draw(SDL_Renderer* renderer, SDL_Window* window, double tileX, dou
 			for(vector<WayPoint>::iterator it = waypoints.begin(); it!=waypoints.end(); ++it) {
 				WayPoint wp = *it;
 				if(wp.getX() == x && wp.getY() == y) {
-					SDL_RenderCopy(renderer, waypointTex, NULL, &destRect);
+					SDL_RenderCopy(renderer, waypointChooserTex, NULL, &destRect);
 				}
 			}
+			for(WayPoint wp : path) {
+							if(wp.getX() == x && wp.getY() == y) {
+								SDL_RenderCopy(renderer, pathfindingTex, NULL, &destRect);
+							}
+						}
+
 
 			Unit* drawingUnit = unitAt(x, y);
 			if(drawingUnit != NULL){
@@ -101,6 +109,11 @@ Unit* TileMap::unitAt(int x, int y) {
 		}
 	}
 	return NULL;
+}
+
+bool TileMap::isTilePassable(int x, int y) {
+	int tile = tileAt(x,y);
+	return (tile == 1);
 }
 
 int TileMap::getW() {
