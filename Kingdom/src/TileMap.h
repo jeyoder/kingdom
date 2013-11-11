@@ -11,12 +11,12 @@
 #include <string>
 #include <fstream>
 #include <vector>
-
 #include "MapLoader.h"
 #include "Unit.h"
 #include "ResourceLoader.h"
 #include "WayPoint.h"
 namespace kingdom {
+class Unit;
 class TileMap {
 public:
 	TileMap(MapLoader* generator, SDL_Texture* tileset);
@@ -28,8 +28,9 @@ public:
 	int getH();
 	bool isTilePassable(int x, int y);
 	std::vector<short> mapData;
-	const int tileW = 64;
-	const int tileH = 64;
+	static const int tileW = 64;
+	static const int tileH = 64;
+	std::vector<Unit*> getUnitsList();
 private:
 	SDL_Texture* tileset;
 

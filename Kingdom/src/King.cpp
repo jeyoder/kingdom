@@ -14,6 +14,7 @@ namespace kingdom {
 
 	King::King(int PlayerNumber, int TileX, int TileY) : kingdom::Unit(PlayerNumber,TileX,TileY)  {
 		texture = ResourceLoader::getInstance()->loadTexture("assets/KingGreen.png");
+		tilesPerTurn = 1;
 	}
 	SDL_Texture* King::getTexture(ResourceLoader* Loader){
 		return texture;

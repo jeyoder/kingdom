@@ -21,6 +21,7 @@ public:
 	int getY() const;
 	const bool operator== (const WayPoint& comp);
 	const bool operator!= (const WayPoint& comp);
+	WayPoint closestTile(int yourX, int yourY);
 };
 
 

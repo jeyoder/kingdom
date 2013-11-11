@@ -22,7 +22,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 //#include <ctime>
-
+#include <vector>
 #include <iostream>
 #include <cmath>
 
@@ -57,6 +57,7 @@ InGameState::InGameState(MapLoader* loader, std::string tileset) {
 	this->scale = 1.0;
 	this->mouseZoom = 0;
 	turnLength = 5000;
+	inOrderMode = false;
 }
 
 //bool InGameState::render(SDL_Renderer* renderer, SDL_Window* window, double delta, const Uint8* keystates){
@@ -74,11 +75,32 @@ InGameState::InGameState(MapLoader* loader, std::string tileset) {
 
 bool InGameState::render(SDL_Renderer* renderer, SDL_Window* window, double delta, const Uint8* keystates, vector<SDL_Event> &events){
 	//Game Logic
-	timeSinceLastTurn += delta;
-	if(timeSinceLastTurn >= turnLength){
-		nextTurn();
-		timeSinceLastTurn = timeSinceLastTurn - turnLength;
+	switch (currentTurnState){
+		case Input:
+			timeSinceLastTurn += delta;
+			if(timeSinceLastTurn >= turnLength){
+				nextTurn();
+				timeSinceLastTurn = timeSinceLastTurn - turnLength;
+			}
+			break;
+		case Animating:
+			bool StillAnimating = false;
+			std::vector<Unit*> unitList = this->map->getUnitsList();
+			for(unsigned int i = 0; i < unitList.size(); i++){
+				if(unitList.at(i)->getUnitTurnState() == Unit::Animating){
+					StillAnimating = true; //if someone is still animating we have to stay in the animating state
+					unitList.at(i)->moveAnimate(delta);
+				}
+			}
+			if(!StillAnimating){
+				this->currentTurnState = Input;
+			}
+			break;
 	}
+
+
+	//
+
 	double scrollAmt = delta * scrollSpeed;
 	if(keystates[SDL_SCANCODE_A]) {
 		tileX -= scrollAmt;
@@ -123,28 +145,29 @@ bool InGameState::render(SDL_Renderer* renderer, SDL_Window* window, double delt
 				if(clickedTileX >= 0 && clickedTileX <= map->getW() && clickedTileY >= 0 && clickedTileY <= map->getH()) { //if the click was actually on the map
 					inOrderMode = true;
 					vector<WayPoint> orderPoints = {WayPoint(clickedTileX, clickedTileY)};
-					tempOrder = Order(selectedUnits.at(0), orderPoints, 0, map);
-					tempOrderPath = tempOrder.getPath();
+					tempOrder = Order(orderPoints, 1, map);
+					tempOrderPath = tempOrder.getPath(selectedUnits.front()->getPosition());
 				}
 			} else if (e.button.button == SDL_BUTTON_RIGHT && selectedUnits.size() > 0 && e.type == SDL_MOUSEBUTTONUP) { //right click end, dispatch the order and clear the waypoint chooser
 				inOrderMode = false;
 				if(clickedTileX >= 0 && clickedTileX <= map->getW() && clickedTileY >= 0 && clickedTileY <= map->getH()) { //if click is inside tha map
 					vector<WayPoint> orderPoints = {WayPoint(clickedTileX, clickedTileY)};
-					tempOrder = Order(selectedUnits.at(0), orderPoints, 0, map);
-					tempOrderPath = tempOrder.getPath();
+					tempOrder = Order(orderPoints, 1, map);
+					tempOrderPath = tempOrder.getPath(selectedUnits.front()->getPosition());
 				}
 				cout << "Dispatch Order" << endl;
-
+				Order* ptr = new Order(tempOrder);
+				selectedUnits.front()->giveOrder(ptr);
 			} else if (e.type == SDL_MOUSEMOTION) { //on mouse move
 				if((mouseButtons & SDL_BUTTON_RMASK) && inOrderMode) { //if the  rmb is down and a unit is receiving orders
 					vector<WayPoint> orderPoints = {WayPoint(clickedTileX, clickedTileY)};
-					tempOrder = Order(selectedUnits.at(0), orderPoints, 0, map);
-					tempOrderPath = tempOrder.getPath();
+					tempOrder = Order(orderPoints, 1, map);
+					tempOrderPath = tempOrder.getPath(selectedUnits.front()->getPosition());
+
 				}
 			}
 		}
 	}
-	cout << inOrderMode << endl;
 	if(inOrderMode) {
 		vector<WayPoint> orderPoints = tempOrder.getWayPoints();
 		map->draw(renderer, window, tileX, tileY, scale, selectedUnits, orderPoints, tempOrderPath);
@@ -153,11 +176,15 @@ bool InGameState::render(SDL_Renderer* renderer, SDL_Window* window, double delt
 		vector<WayPoint> empty;
 		map->draw(renderer, window, tileX, tileY, scale, selectedUnits, empty, empty);
 	}
-
 	//Render UI
 	// Write text to surface
 	std::stringstream turnText;
-	turnText << "Turn: " << turnNumber << " (" << ceil((turnLength-timeSinceLastTurn)/1000) << ")";
+	if(this->currentTurnState == Input){
+		turnText << "Turn: " << turnNumber << " (" << ceil((turnLength-timeSinceLastTurn)/1000) << ")";
+	}
+	else{
+		turnText << "Taking Turn...";
+	}
 	SDL_Color text_color = {255, 255, 255};
 	int windowW;
 	int windowH;
@@ -171,7 +198,16 @@ InGameState::turnState InGameState::getTurnState(){
 	return this->currentTurnState;
 }
 void InGameState::nextTurn(){
-	cout << "Next Turn" << endl;
+	turnNumber++;
+	this->currentTurnState = Processing;
+	cout << "Next Turn";
+	//Tell all the units to take their turn
+	std::vector<Unit*> unitList = this->map->getUnitsList();
+	for(unsigned int i = 0; i < unitList.size(); i++){
+		unitList.at(i)->nextUnitTurn();
+	}
+	//Change turn state
+	this->currentTurnState = Animating; //Will remain in animated state until all units report their state to input
 }
 InGameState::~InGameState() {
 	delete map;

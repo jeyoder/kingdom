@@ -15,6 +15,8 @@
 #include <vector>
 #include "King.h"
 #include "ResourceLoader.h"
+#include <iterator>
+#include "Pawn.h"
 using namespace std;
 namespace kingdom {
 
@@ -26,8 +28,18 @@ TileMap::TileMap(MapLoader* generator, SDL_Texture* tileset) {
 	//mapUnits = std::vector<std::vector<Unit> > (this->mapW); //create a 2d vector containing units
 	mapUnits = std::vector<Unit*> (); //create a vector containing pointers to our units
 	mapUnits.push_back(new King(0,50, 50));
-	mapUnits.push_back(new King(0,50, 51));
-	mapUnits.push_back(new King(0,55,55));
+	mapUnits.push_back(new Pawn(0,51, 49));
+	mapUnits.push_back(new Pawn(0,49, 49));
+	/*mapUnits.push_back(new King(0,50, 51));
+	mapUnits.push_back(new King(0,55,55));*/
+	vector<WayPoint*> orderWays = vector<WayPoint*>();
+	//orderWays.push_back(new WayPoint(56,50));
+	//orderWays.push_back(new WayPoint(56,53));
+	//mapUnits.at(0)->giveOrder(new Order(mapUnits.at(0),orderWays,1));
+	//orderWays = vector<WayPoint*>();
+	//orderWays.push_back(new WayPoint(51,51));
+	///orderWays.push_back(new WayPoint(56,53));
+	//mapUnits.at(0)->giveOrder(new Order(mapUnits.at(0),orderWays,4));
 	//delete mapUnits[5];
 	selectedTex = ResourceLoader::getInstance()->loadTexture("assets/selected.png");
 	waypointTex = ResourceLoader::getInstance()->loadTexture("assets/target.png");
@@ -51,6 +63,7 @@ void TileMap::draw(SDL_Renderer* renderer, SDL_Window* window, double tileX, dou
 	int maxTileY = min((int) (tileY + (windowH / 2 / zoomLevel / tileH) + 1), mapH - 1);
 
 	int selX = 50, selY = 50;
+	//render tiles
 	for (int x = minTileX; x <= maxTileX; x++) {
 		for (int y = minTileY; y <= maxTileY; y++) {
 			int srcTile = tileAt(x, y);
@@ -59,7 +72,6 @@ void TileMap::draw(SDL_Renderer* renderer, SDL_Window* window, double tileX, dou
 			srcRect.y = 0;
 			srcRect.w = tileW;
 			srcRect.h = tileH;
-
 			SDL_Rect destRect = {};
 			destRect.x = ((x - tileX) * tileW * zoomLevel) + (windowW / 2);
 			destRect.y = ((y - tileY) * tileH * zoomLevel) + (windowH / 2);
@@ -68,8 +80,23 @@ void TileMap::draw(SDL_Renderer* renderer, SDL_Window* window, double tileX, dou
 			destRect.h = tileH * zoomLevel;
 
 			SDL_RenderCopy(renderer, tileset, &srcRect, &destRect); //draw the tile
-
-
+		}
+	}
+	//render stuff on the tiles
+	for (int x = minTileX; x <= maxTileX; x++) {
+		for (int y = minTileY; y <= maxTileY; y++) {
+			int srcTile = tileAt(x, y);
+			SDL_Rect srcRect = {};
+			srcRect.x = (srcTile - 1) * tileW;
+			srcRect.y = 0;
+			srcRect.w = tileW;
+			srcRect.h = tileH;
+			SDL_Rect destRect = {};
+			destRect.x = ((x - tileX) * tileW * zoomLevel) + (windowW / 2);
+			destRect.y = ((y - tileY) * tileH * zoomLevel) + (windowH / 2);
+			//cout << "X: " << destRect.x << " / " << endl;
+			destRect.w = tileW * zoomLevel;
+			destRect.h = tileH * zoomLevel;
 			for(vector<Unit*>::iterator it = selectedUnits.begin(); it != selectedUnits.end(); ++it) {
 				Unit* unit = *it;
 				if(unit->tileX == x && unit->tileY == y) {
@@ -92,10 +119,13 @@ void TileMap::draw(SDL_Renderer* renderer, SDL_Window* window, double tileX, dou
 
 			Unit* drawingUnit = unitAt(x, y);
 			if(drawingUnit != NULL){
-				SDL_RenderCopy(renderer, drawingUnit->getTexture(ResourceLoader::getInstance()), NULL, &destRect); //draw the unit, if exists
+				SDL_Rect animatedDestRect = destRect;
+				//cout << "offsetX = " << drawingUnit->offsetX;
+				animatedDestRect.x += drawingUnit->offsetX * zoomLevel;
+				animatedDestRect.y += drawingUnit->offsetY * zoomLevel;
+				SDL_RenderCopy(renderer, drawingUnit->getTexture(ResourceLoader::getInstance()), NULL, &animatedDestRect); //draw the unit, if exists
 			}
-
-		};
+		}
 	}
 }
 int TileMap::tileAt(int x, int y) {
@@ -110,6 +140,18 @@ Unit* TileMap::unitAt(int x, int y) {
 	}
 	return NULL;
 }
+
+std::vector<Unit*> TileMap::getUnitsList(){
+	/*std::vector<Unit*> cleanList;
+	for(unsigned int i = 0; i < this->mapUnits.size(); i++){
+		if(mapUnits.at(i) != NULL){
+			cleanList.push_back(mapUnits.at(i));
+		}
+	}
+	return cleanList;*/
+	return mapUnits;
+}
+
 
 bool TileMap::isTilePassable(int x, int y) {
 	int tile = tileAt(x,y);

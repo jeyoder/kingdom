@@ -11,21 +11,40 @@
 #include "Drawable.h"
 #include <string>
 #include "ResourceLoader.h"
+#include "Order.h"
+#include "WayPoint.h"
+#include <vector>
 namespace kingdom {
-
+using namespace std;
+class Order;
 class Unit: public Drawable {
+public:
+	enum unitTurnState {Input, Animating};
+	Unit(int PlayerNumber,int TileX,int TileY);
+	int tileX, tileY;
+	virtual ~Unit();
+	virtual SDL_Texture* getTexture(ResourceLoader* Loader) = 0;
+	void giveOrder(Order* TheOrder);
+	virtual void nextUnitTurn();
+	void moveAnimate(double delta);
+	int offsetX,offsetY;
+	unitTurnState getUnitTurnState();
+	WayPoint getPosition();
 private:
 	int playerNum;
+	vector<Order*> orders;
+	Order* currentOrder = NULL;
+	WayPoint currentMovingToPoint = WayPoint(0,0);
 
 protected:
 	virtual void render(SDL_Renderer*, SDL_Window*);
 	std::string myImagePlayerSufix;
 	std::string myImagePlayerPrefix;
-public:
-	int tileX, tileY;
-	Unit(int,int,int);
-	virtual ~Unit();
-	virtual SDL_Texture* getTexture(ResourceLoader* Loader) = 0;
+	int tilesPerTurn = 1; //Would likely be called something like "Movement Speed" in game UI
+	int timePerTile = 1000; //How many miliseconds it takes to move one tile while animating
+	int tilesMovedAlready = 0;
+	int msAlreadyAnimated = 0;
+	unitTurnState currentUnitTurnState = Input;
 };
 
 } /* namespace kingdom */

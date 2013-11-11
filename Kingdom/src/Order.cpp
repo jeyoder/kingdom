@@ -10,25 +10,59 @@
 #include <set>
 #include <map>
 using namespace std;
+#include <iostream>
 namespace kingdom {
 
-Order::Order(Unit *ToWho, std::vector<WayPoint> Waypoints, int TurnsTillExecute, TileMap* map) {
+Order::Order(std::vector<WayPoint> Waypoints, int TurnsTillExecute, TileMap* map) {
 	// TODO Auto-generated constructor stub
-	this->toWho = ToWho;
 	this->waypoints = Waypoints;
+	cout << "Constructing order with waypoints size " << Waypoints.size() << endl;
+	cout.flush();
 	this->turnsTillExecute = TurnsTillExecute;
 	this->map = map;
+	this->activated = false;
+}
+void Order::decrementTurns(){
+	turnsTillExecute--;
+	std::cout << "order decrementing. now have " << turnsTillExecute << "turns \n";
+	std::cout.flush();
+}
+int Order::getTurnsTillExecute(){
+	return turnsTillExecute;
+}
+WayPoint Order::nextTile(WayPoint currentPos){
+	if (waypoints.size() == 0 || waypoints.front() == currentPos) return currentPos;
+    cout << "Order next tile size" << waypoints.size() << endl;
+    cout.flush();
+
+	vector<WayPoint> path =  aStar(currentPos,waypoints.front());
+
+    return path.front();
 }
 
+void Order::updateStatus(WayPoint currentPos) {
+    cout << "Order update status size" << waypoints.size() << endl;
+	if(waypoints.size() > 0 && currentPos == waypoints.front()) { //reached goal waypoint
+	    cout << "Order reached goal" << waypoints.size() << endl;
+		waypoints.erase(waypoints.begin());
+	}
+}
+
+bool Order::completed() {
+	return (waypoints.size() == 0);
+}
+
+
+
 Order::Order() {
-	this->toWho = nullptr;
 	this->waypoints = vector<WayPoint>();
 	this->turnsTillExecute = 0;
 	this->map = nullptr;
+	this->activated = false;
 }
 
-vector<WayPoint> Order::getPath() {
-	return aStar(WayPoint(toWho->tileX, toWho->tileY), waypoints.at(0));
+vector<WayPoint> Order::getPath(WayPoint startPos) {
+	return aStar(startPos, waypoints.front()); //TODO: do all waypoints
 }
 
 vector<WayPoint> Order::getWayPoints() {
@@ -64,7 +98,7 @@ vector<WayPoint> Order::aStar(WayPoint from, WayPoint to) {
 			vector<WayPoint> result;
 			PathfindingNode resultNode = current;
 			while(resultNode.waypoint != from) {
-				result.push_back(resultNode.waypoint);
+				result.insert(result.begin(), resultNode.waypoint);
 		//		cout << "<= (" << resultNode.waypoint.getX() << "," << resultNode.waypoint.getY() << ")"  << endl;
 				resultNode = parent.at(resultNode);
 			}
