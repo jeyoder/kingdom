@@ -10,40 +10,31 @@
 #include <set>
 #include <map>
 using namespace std;
-#include <iostream>
 namespace kingdom {
 
 Order::Order(std::vector<WayPoint> Waypoints, int TurnsTillExecute, TileMap* map) {
 	// TODO Auto-generated constructor stub
 	this->waypoints = Waypoints;
-	cout << "Constructing order with waypoints size " << Waypoints.size() << endl;
-	cout.flush();
 	this->turnsTillExecute = TurnsTillExecute;
 	this->map = map;
 	this->activated = false;
 }
 void Order::decrementTurns(){
 	turnsTillExecute--;
-	std::cout << "order decrementing. now have " << turnsTillExecute << "turns \n";
-	std::cout.flush();
 }
 int Order::getTurnsTillExecute(){
 	return turnsTillExecute;
 }
 WayPoint Order::nextTile(WayPoint currentPos){
 	if (waypoints.size() == 0 || waypoints.front() == currentPos) return currentPos;
-    cout << "Order next tile size" << waypoints.size() << endl;
-    cout.flush();
 
 	vector<WayPoint> path =  aStar(currentPos,waypoints.front());
 
-    return path.front();
+    return path.size() > 0 ? path.front() : currentPos;
 }
 
 void Order::updateStatus(WayPoint currentPos) {
-    cout << "Order update status size" << waypoints.size() << endl;
 	if(waypoints.size() > 0 && currentPos == waypoints.front()) { //reached goal waypoint
-	    cout << "Order reached goal" << waypoints.size() << endl;
 		waypoints.erase(waypoints.begin());
 	}
 }
@@ -120,7 +111,7 @@ vector<WayPoint> Order::aStar(WayPoint from, WayPoint to) {
 				else if (dir == 3) y++;
 				PathfindingNode neighbor(WayPoint(x,y));
 				if (!(x == curX && y == curY) && x >= 0 && x < map->getW() && y >=0 && y < map->getH() && closedSet.find(neighbor) == closedSet.end()
-					&& map->isTilePassable(x,y)) { //if it's actually a neighbor, and not in the closed set
+					&& map->isTilePassable(x,y) && map->unitAt(x,y) == nullptr) { //if it's actually a neighbor, and not in the closed set
 					//cout << "  Processing Neighbor: " << x << "," << y ;
 
 					int possiblePastScore = current.pastScore + 1;

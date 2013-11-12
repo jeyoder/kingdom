@@ -200,11 +200,11 @@ InGameState::turnState InGameState::getTurnState(){
 void InGameState::nextTurn(){
 	turnNumber++;
 	this->currentTurnState = Processing;
-	cout << "Next Turn";
+	cout << "Starting Turn " << turnNumber <<endl;
 	//Tell all the units to take their turn
 	std::vector<Unit*> unitList = this->map->getUnitsList();
-	for(unsigned int i = 0; i < unitList.size(); i++){
-		unitList.at(i)->nextUnitTurn();
+	for(Unit* unit : unitList){
+		unit->nextUnitTurn();
 	}
 	//Change turn state
 	this->currentTurnState = Animating; //Will remain in animated state until all units report their state to input

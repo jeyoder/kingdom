@@ -45,12 +45,10 @@ void Unit::render(SDL_Renderer* Renderer,SDL_Window* Window){
 
 }
 void Unit::giveOrder(Order* theOrder){
-	std::cout << "Looky her unit at " << tileX << tileY << "got a order";
+	std::cout << "Looky here unit at (" << tileX << "," << tileY << ") got a order";
 	this->orders.push_back(theOrder);
 }
 void Unit::nextUnitTurn(){
-	std::cout << "Hey I'm a Unit at " << tileX << tileY << "taking my turn \n";
-	cout.flush();
 	if(orders.size() > 0){ //if we have orders...
 		for(unsigned int i = 0; i < orders.size(); i++){
 			orders.at(i)->decrementTurns(); //, then decrement their turns
@@ -60,8 +58,6 @@ void Unit::nextUnitTurn(){
 			if(orders.at(i)->getTurnsTillExecute() <= 0){
 				orders.at(i)->activated = true;
 				this->currentOrder = orders.at(i);
-				std::cout << "assigning current order number " << i << "\n";
-				std::cout.flush();
 				this->currentUnitTurnState = Animating;
 				currentMovingToPoint = currentOrder->nextTile(getPosition());
 				//delete everything before it
@@ -113,8 +109,6 @@ void Unit::moveAnimate(double delta){
 				this->offsetY = 0;
 				tilesMovedAlready++;
 				this->currentMovingToPoint = currentOrder->nextTile(WayPoint(tileX, tileY));
-				std::cout << "increment " << tilesMovedAlready << " \n";
-				std::cout.flush();
 				msAlreadyAnimated = msAlreadyAnimated-timePerTile;
 			}
 		}
@@ -128,9 +122,10 @@ void Unit::moveAnimate(double delta){
 				this->currentUnitTurnState = Input;
 			}
 			if(currentOrder->completed()){
-				for(int i = 0; i < orders.size(); i++){
-					if(orders.at(i) == currentOrder){
-						orders.erase(orders.begin()+i);
+				for(vector<Order*>::iterator order = orders.begin(); order != orders.end(); ++order){
+					if(*order == currentOrder){
+						orders.erase(order);
+						break;
 					}
 				}
 				delete currentOrder;
